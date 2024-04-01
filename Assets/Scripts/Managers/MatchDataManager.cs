@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Utilities;
 
-public class FrameDataManager : MonoSingleton<FrameDataManager>
+public class MatchDataManager : MonoSingleton<MatchDataManager>
 {
     public List<FrameData> allFrameData { get; private set; } = new();
-
+    public bool isDataLoaded { get; private set; }
     
     public async Task LoadJsonDataAsync(string path)
     {
