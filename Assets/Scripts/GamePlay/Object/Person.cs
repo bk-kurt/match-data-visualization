@@ -1,4 +1,5 @@
 using DataModels;
+using GamePlay.Controllers;
 using UnityEngine;
 using Utilities;
 
@@ -6,6 +7,7 @@ namespace DefaultNamespace
 {
     public class Person : BaseInterpolatedObject
     {
+        [SerializeField] private PersonController Controller;
         [SerializeField] private PersonUI UI;
         private PersonData _initialPersonData;
 
@@ -39,6 +41,8 @@ namespace DefaultNamespace
             {
                 BallEventManager.Instance.ChangeBallPossession(personData);
             }
+
+            Controller.ApplyTopLevelChanges();
         }
 
         private void HandleBallPossessionChange(int playerId, Possession possession) //999

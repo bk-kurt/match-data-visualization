@@ -1,10 +1,12 @@
 using DataModels;
+using GamePlay.Controllers;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public class Ball : BaseInterpolatedObject
     {
+        [SerializeField] private BallController Controller;
         public void Initialize(BallData ballData)
         {
             if (ballData == null )
@@ -20,6 +22,7 @@ namespace DefaultNamespace
         {
             var ballData = interpolatedStateData as BallData;
             base.UpdateState(ballData);
+            Controller.ApplyTopLevelChanges();
         }
     }
 }
