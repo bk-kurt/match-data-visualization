@@ -19,15 +19,15 @@ namespace UI.Screen
 
         void OnEnable()
         {
-            MatchStateManager.Instance.OnFrameDataChanged += OnGameDataChanged;
+            MatchStateManager.Instance.OnFrameAdvanced += OnGameAdvanced;
         }
 
         void OnDisable()
         {
-            MatchStateManager.Instance.OnFrameDataChanged -= OnGameDataChanged;
+            MatchStateManager.Instance.OnFrameAdvanced -= OnGameAdvanced;
         }
 
-        private void OnGameDataChanged(FrameData frameData)
+        private void OnGameAdvanced(FrameData frameData)
         {
             if (frameData == null)
             {

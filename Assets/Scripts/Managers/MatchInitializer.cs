@@ -1,12 +1,13 @@
 using System.Collections;
 using Providers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Managers
 {
     public class MatchInitializer : MonoBehaviour
     {
-        [SerializeField] private VisualizationAssetConfigurationProvider VisualizationAssetConfigurationProvider;
+        [SerializeField] private VisualizationAssetConfigurationProvider visualizationAssetConfigurationProvider;
         private MatchStateManager _matchStateManager;
         private MatchDataManager _matchDataManager;
         private MatchVisualizationManager _matchVisualizationManager;
@@ -16,11 +17,12 @@ namespace Managers
             _matchDataManager = MatchDataManager.Instance;
             _matchStateManager = MatchStateManager.Instance;
             _matchVisualizationManager = MatchVisualizationManager.Instance;
-            
+
             // fetches the current configuration and applies it to the MatchVisualizationManager.
             //This approach saves the MatchVisualizationManager from directly depending on the
             // VisualizationAssetConfigurationProvider.
-            ConfigurationManager.Instance.SetConfiguration(VisualizationAssetConfigurationProvider.GetGameAssetsConfig());
+            ConfigurationManager.Instance.SetConfiguration(
+                visualizationAssetConfigurationProvider.GetGameAssetsConfig());
             StartConfig();
         }
 
@@ -28,9 +30,9 @@ namespace Managers
         {
             yield return LoadGameDataAsync("Assets/Data/Applicant-test-1.JSON");
 
-            if (_matchDataManager.IsDataLoaded && _matchDataManager.AllFrameData.Count > 0)
+            if (_matchDataManager.IsDataLoaded && _matchDataManager.GetFrameCount() > 0)
             {
-                var initialFrameData = _matchDataManager.AllFrameData[0];
+                var initialFrameData = _matchDataManager.GetFrameDataAtIndex(0);
                 _matchStateManager.InitializeMatchState(initialFrameData);
 
                 _matchStateManager.TogglePlayback(true);
@@ -40,7 +42,7 @@ namespace Managers
                 Debug.LogError("Failed to load frame data or data is empty.");
             }
         }
-        
+
         private void StartConfig()
         {
             var config = ConfigurationManager.Instance.GetCurrentConfiguration();

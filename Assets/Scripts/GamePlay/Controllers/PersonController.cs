@@ -48,9 +48,9 @@ namespace GamePlay.Controllers
     [Serializable]
     public class TopLevelPersonAnimaVariables
     {
-        public float runningSpeedThreshold = 2.5f;
+        public float runningSpeedThreshold = 2f;
         public float speedCalculationTolerance = 0.1f;
-        public float walkingSpeedMultiplier = 0.1f;
+        public float walkingSpeedMultiplier = 0.5f;
         public float runningSpeedMultiplier = 0.4f;
 
         public static readonly int SpeedHash = Animator.StringToHash("Speed");

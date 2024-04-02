@@ -3,13 +3,14 @@ using UnityEngine;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using UnityEngine.Serialization;
 using Utilities;
 
 public class MatchDataManager : MonoSingleton<MatchDataManager>
 {
-    public List<FrameData> AllFrameData { get; private set; } = new();
+    public FrameDataStorage frameDataStorage;
     public bool IsDataLoaded { get; private set; }
-    
+
     public async Task LoadJsonDataAsync(string path)
     {
         try
@@ -19,40 +20,38 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
                 Debug.LogError($"File does not exist at the given path: {path}");
                 return;
             }
-            
+
             string jsonContent = await FileUtils.ReadFileAsync(path);
 
             // wrap to 1 object
             jsonContent = "{\"items\":" + jsonContent + "}";
 
             FrameDataList frameDataList = JsonUtility.FromJson<FrameDataList>(jsonContent);
-            AllFrameData = frameDataList.items;
+            frameDataStorage.LoadFrameData(frameDataList.items); // This operation is synchronous, so i odnt need to await
             IsDataLoaded = true;
 
-            Debug.Log($"Data loaded successfully with {AllFrameData.Count} frames.");
+            Debug.Log($"Data loaded successfully with {frameDataStorage.frameDataList.Count} frames.");
         }
         catch (Exception e)
         {
             Debug.LogError($"Failed to load and parse the JSON data: {e.Message}");
         }
     }
-    
+
     public FrameData GetFrameDataAtIndex(int index)
     {
-        if (index >= 0 && index < AllFrameData.Count)
+        if (index >= 0 && index < frameDataStorage.frameDataList.Count)
         {
-            return AllFrameData[index];
+            return frameDataStorage.frameDataList[index];
         }
-        else
-        {
-            Debug.LogError("Index out of range.");
-            return null;
-        }
+
+        Debug.LogError("Index out of range.");
+        return null;
     }
 
     public int GetFrameCount()
     {
-        return AllFrameData.Count;
+        return frameDataStorage.frameDataList.Count;
     }
 }
 
@@ -60,5 +59,5 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
 [Serializable]
 public class FrameDataList
 {
-    public List<FrameData> items = new List<FrameData>();
+    public List<FrameData> items = new();
 }

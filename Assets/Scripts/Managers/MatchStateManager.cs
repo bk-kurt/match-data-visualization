@@ -6,7 +6,7 @@ namespace Managers
 {
     public class MatchStateManager : MonoSingleton<MatchStateManager>
     {
-        public event Action<FrameData> OnFrameDataChanged;
+        public event Action<FrameData> OnFrameAdvanced;
 
         private FrameData CurrentFrame { get; set; }
         private int _currentFrameIndex;
@@ -19,11 +19,12 @@ namespace Managers
         public void InitializeMatchState(FrameData frameData)
         {
             CurrentFrame = frameData;
-            OnFrameDataChanged?.Invoke(frameData);
+            OnFrameAdvanced?.Invoke(frameData);
         }
-        void Update()
+
+        private void Update()
         {
-            if (!_isPlaying || MatchDataManager.Instance.AllFrameData.Count == 0) return;
+            if (!_isPlaying || MatchDataManager.Instance.GetFrameCount() == 0) return;
 
             _timeSinceLastFrameChange += Time.deltaTime* playbackSpeed;
             if (Math.Abs(_timeSinceLastFrameChange) >= TimePerFrame)
@@ -35,7 +36,7 @@ namespace Managers
 
         private void AdvanceFrame()
         {
-            var frameCount = MatchDataManager.Instance.AllFrameData.Count;
+            var frameCount = MatchDataManager.Instance.GetFrameCount();
             if (playbackSpeed > 0)
             {
                 _currentFrameIndex = (_currentFrameIndex + 1) % frameCount;
@@ -44,8 +45,8 @@ namespace Managers
             {
                 _currentFrameIndex = (_currentFrameIndex - 1 + frameCount) % frameCount;
             }
-            CurrentFrame = MatchDataManager.Instance.AllFrameData[_currentFrameIndex];
-            OnFrameDataChanged?.Invoke(CurrentFrame);
+            CurrentFrame = MatchDataManager.Instance.GetFrameDataAtIndex(_currentFrameIndex);
+            OnFrameAdvanced?.Invoke(CurrentFrame);
         }
         
         public void TogglePlayback(bool play)
