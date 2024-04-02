@@ -1,29 +1,57 @@
+using System;
 using System.Collections.Generic;
 using DataModels;
 using DefaultNamespace;
 using GamePlay;
 using GamePlay.Controllers;
+using UnityEngine;
 using Utilities;
 
 namespace Managers
 {
     public class MatchVisualizationManager : MonoSingleton<MatchVisualizationManager>
     {
-        private IVisualizationAssetConfiguration _visualizationAssetConfiguration;
+        private readonly Dictionary<int, Person> _activePersons = new Dictionary<int, Person>();
+        private Ball _instantiatedBall;
+        
+        private VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
         private VisualElementFactory _visualElementFactory;
 
-        private readonly Dictionary<int, Person> _activePersons = new();
-        private Ball _instantiatedBall;
-
-        private void OnEnable()
+        protected void OnEnable()
         {
+            ConfigurationManager.Instance.OnConfigurationChanged += SetGameAssetConfiguration;
             MatchStateManager.Instance.OnFrameDataChanged += UpdateVisualStateFromFrameData;
+            SetGameAssetConfiguration(ConfigurationManager.Instance.GetCurrentConfiguration());
         }
 
-        public void SetGameAssetConfiguration(IVisualizationAssetConfiguration visualizationAssetConfiguration)
+        public void SetGameAssetConfiguration(VisualizationAssetsConfigSo config)
         {
-            _visualizationAssetConfiguration = visualizationAssetConfiguration;
-            _visualElementFactory = new VisualElementFactory(_visualizationAssetConfiguration.GetGameAssetsConfig());
+            _visualizationAssetsConfigSo = config;
+            _visualElementFactory = new VisualElementFactory(_visualizationAssetsConfigSo);
+            
+            RefreshVisualStateFromConfigData();
+        }
+        
+        private void RefreshVisualStateFromConfigData()
+        {
+            try
+            {
+                foreach (var person in _activePersons.Values)
+                {
+                    if (person != null)
+                    {
+                        person.RefreshConfig(_visualizationAssetsConfigSo);
+                    }
+                }
+                if (_instantiatedBall != null)
+                {
+                    _instantiatedBall.RefreshConfig(_visualizationAssetsConfigSo);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to refresh config state: {ex.Message}");
+            }
         }
 
         private void UpdateVisualStateFromFrameData(FrameData frameData)
@@ -85,6 +113,7 @@ namespace Managers
         private void OnDisable()
         {
             MatchStateManager.Instance.OnFrameDataChanged -= UpdateVisualStateFromFrameData;
+            ConfigurationManager.Instance.OnConfigurationChanged -= SetGameAssetConfiguration;
         }
     }
 }

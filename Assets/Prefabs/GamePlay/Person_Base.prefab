@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a4b12e5e7941b5a36cf1bd7894d723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controller: {fileID: 3081967405653024532}
+  controller: {fileID: 3081967405653024532}
   UI: {fileID: 7121724023145596360}
 --- !u!114 &3081967405653024532
 MonoBehaviour:

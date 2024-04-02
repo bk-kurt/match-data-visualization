@@ -24,5 +24,12 @@ namespace DefaultNamespace
             base.UpdateState(ballData);
             Controller.ApplyTopLevelChanges(interpolatedStateData);
         }
+
+        public void RefreshConfig(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
+        {
+            //  this might involve updating the ball's visual effects, textures,
+            // or even physics properties to reflect the new configuration.
+            throw new System.NotImplementedException();
+        }
     }
 }

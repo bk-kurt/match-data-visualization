@@ -1,13 +1,14 @@
 using DataModels;
 using GamePlay.Controllers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities;
 
 namespace DefaultNamespace
 {
     public class Person : BaseInterpolatedObject
     {
-        [SerializeField] private PersonController Controller;
+        [SerializeField] private PersonController controller;
         [SerializeField] private PersonUI UI;
         private PersonData _initialPersonData;
 
@@ -42,7 +43,7 @@ namespace DefaultNamespace
                 BallEventManager.Instance.ChangeBallPossession(personData);
             }
 
-            Controller.ApplyTopLevelChanges(interpolatedStateData);
+            controller.ApplyTopLevelChanges(interpolatedStateData);
         }
 
         private void HandleBallPossessionChange(int playerId, Possession possession) //999
@@ -56,6 +57,12 @@ namespace DefaultNamespace
             }
         }
 
+        public void RefreshConfig(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
+        {
+            // For example, changing the character model, updating textures,
+            // or applying new animation sets based on the provided 
+            throw new System.NotImplementedException();
+        }
         void OnDisable()
         {
             if (BallEventManager.Instance != null)
