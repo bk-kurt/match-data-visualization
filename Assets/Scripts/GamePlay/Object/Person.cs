@@ -1,9 +1,10 @@
 using DataModels;
 using UnityEngine;
+using Utilities;
 
 namespace DefaultNamespace
 {
-    public class Person : MonoBehaviour
+    public class Person : BaseInterpolatedObject
     {
         [SerializeField] private PersonUI UI;
         private PersonData _initialPersonData;
@@ -15,17 +16,26 @@ namespace DefaultNamespace
 
         public void Initialize(PersonData personData)
         {
-            // todo
+            if (personData == null || personData.Position == null || personData.Position.Length < 3)
+            {
+                Debug.LogError("Invalid PersonData provided.");
+                return;
+            }
+
+            _initialPersonData = personData;
             UpdateState(personData);
-            UI.Initialize("defaulname");
+
+            
+            UI.Initialize("defaultname");
         }
 
-        public void UpdateState(PersonData personData)
+        public override void UpdateState(IInterpolatedStateData interpolatedStateData)
         {
-            transform.position = personData.targetPosition;
-            transform.rotation = personData.TargetRotation;
+            base.UpdateState(interpolatedStateData);
 
-            if (personData.PersonContext is { HasBallPossession: true })
+            var personData = interpolatedStateData as PersonData;
+
+            if (personData != null && personData.PersonContext.HasBallPossession)
             {
                 BallEventManager.Instance.ChangeBallPossession(personData);
             }

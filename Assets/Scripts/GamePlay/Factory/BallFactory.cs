@@ -20,7 +20,7 @@ namespace DefaultNamespace
                     return null;
                 }
 
-                Vector3 ballPosition = ballData.targetPosition;
+                Vector3 ballPosition = ballData.TargetPosition;
                 Ball instantiatedBallGo =
                     Object.Instantiate(configSo.ballPrefab, ballPosition, Quaternion.identity);
 

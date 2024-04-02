@@ -5,7 +5,7 @@ using Utilities;
 namespace DataModels
 {
     [System.Serializable][CanBeNull]
-    public class BallData
+    public class BallData : IInterpolatedStateData
     {
         public int Id;
         public float Timestamp;
@@ -15,7 +15,7 @@ namespace DataModels
         public int JerseyNumber;
         public TrackableBallContext Context;
 
-        public Vector3 targetPosition => UtilityMethods.ArrayToVector3(Position);
+        public Vector3 TargetPosition => UtilityMethods.ArrayToVector3(Position);
         public Quaternion TargetRotation { get; }
     }
 }

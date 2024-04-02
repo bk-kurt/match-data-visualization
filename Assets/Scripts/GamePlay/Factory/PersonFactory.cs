@@ -23,7 +23,7 @@ namespace GamePlay
                 return null;
             }
 
-            Vector3 personPosition = personData.targetPosition;
+            Vector3 personPosition = personData.TargetPosition;
             Person instantiatedPersonGo = Object.Instantiate(personConfigSo.personPrefab, personPosition, Quaternion.identity);
             
             Person personComponent = instantiatedPersonGo.GetComponent<Person>();

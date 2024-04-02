@@ -4,7 +4,7 @@ using Utilities;
 namespace DataModels
 {
     [System.Serializable]
-    public class PersonData
+    public class PersonData: IInterpolatedStateData
     {
         public int Id;
         public float Timestamp;
@@ -16,7 +16,7 @@ namespace DataModels
         public PersonContext PersonContext;
 
         // Assuming default values for missing data
-        public Vector3 targetPosition => UtilityMethods.ArrayToVector3(Position);
+        public Vector3 TargetPosition => UtilityMethods.ArrayToVector3(Position);
         public Quaternion TargetRotation => PersonContext.rotation;
     }
 }

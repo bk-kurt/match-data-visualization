@@ -3,18 +3,23 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class Ball : MonoBehaviour
+    public class Ball : BaseInterpolatedObject
     {
         public void Initialize(BallData ballData)
         {
-            //todo
+            if (ballData == null )
+            {
+                Debug.LogError("BallData is null");
+                return;
+            }
             UpdateState(ballData);
         }
 
-        public void UpdateState(BallData ballData)
+
+        public override void UpdateState(IInterpolatedStateData interpolatedStateData)
         {
-            transform.position = ballData.targetPosition;
-            transform.rotation = ballData.TargetRotation;
+            var ballData = interpolatedStateData as BallData;
+            base.UpdateState(ballData);
         }
     }
 }
