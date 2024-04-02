@@ -1,5 +1,6 @@
 namespace DataModels
 {
+    [System.Serializable]
     public class GameClockContext
     {
         public int Period;

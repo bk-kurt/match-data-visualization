@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using DataModels;
-using UnityEngine;
 
-public class FrameData : MonoBehaviour
+[System.Serializable]
+public class FrameData
 {
     public int FrameCount;
-    public int TimestampUtc;
+    public float TimestampUtc;
     public List<PersonData> Persons;
     public BallData Ball;
     public GameClockContext GameClockContext;

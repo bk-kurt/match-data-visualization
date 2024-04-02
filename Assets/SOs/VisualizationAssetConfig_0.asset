@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c19347fe8ac1412b81ae8fd4b0cc1718, type: 3}
+  m_Name: VisualizationAssetConfig_0
+  m_EditorClassIdentifier: 
+  personConfigs:
+  - {fileID: 11400000, guid: af740832aaa53425e94ddea39181ad65, type: 2}
+  - {fileID: 11400000, guid: 6f38fff46c2904cc6b9d993dd2850eae, type: 2}
+  - {fileID: 11400000, guid: cac76b3889f194bf7b4959cb900ecb91, type: 2}
+  defaultBallConfig: {fileID: 11400000, guid: 9ffc9a1068b9447e78cd719a35908bf4, type: 2}

@@ -5,7 +5,6 @@ namespace Managers
 {
     public class MatchInitializer : MonoBehaviour
     {
-
         private MatchStateManager _matchStateManager;
         private MatchDataManager _matchDataManager;
 
@@ -17,13 +16,13 @@ namespace Managers
 
         IEnumerator Start()
         {
-            yield return LoadGameDataAsync("Assets/Data/Applicant-test.JSON");
-            
-            if (_matchDataManager.isDataLoaded && _matchDataManager.allFrameData.Count > 0)
+            yield return LoadGameDataAsync("Assets/Data/Applicant-test-1.JSON");
+
+            if (_matchDataManager.IsDataLoaded && _matchDataManager.AllFrameData.Count > 0)
             {
-                var initialFrameData = _matchDataManager.allFrameData[0];
-                _matchStateManager.UpdateGameState(initialFrameData);
-                
+                var initialFrameData = _matchDataManager.AllFrameData[0];
+                _matchStateManager.InitializeMatchState(initialFrameData);
+
                 _matchStateManager.TogglePlayback(true);
             }
             else
@@ -31,7 +30,8 @@ namespace Managers
                 Debug.LogError("Failed to load frame data or data is empty.");
             }
         }
-       
+
+
         private IEnumerator LoadGameDataAsync(string path)
         {
             var loadTask = _matchDataManager.LoadJsonDataAsync(path);
@@ -39,6 +39,7 @@ namespace Managers
             {
                 yield return null;
             }
+
             if (loadTask.Exception != null)
             {
                 Debug.LogError($"Error loading data: {loadTask.Exception}");

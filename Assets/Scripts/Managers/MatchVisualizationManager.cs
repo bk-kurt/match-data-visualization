@@ -1,14 +1,20 @@
 using System.Collections.Generic;
 using DataModels;
 using DefaultNamespace;
+using GamePlay;
+using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities;
 
 namespace Managers
 {
     public class MatchVisualizationManager : MonoSingleton<MatchVisualizationManager>
     {
+        [SerializeField] private VisualizationAssetsConfigSo visualizationAssetsConfigSo;
+
         private readonly Dictionary<int, Person> _activePersons = new();
         private Ball _instantiatedBall;
+
         private void OnEnable()
         {
             MatchStateManager.Instance.OnFrameDataChanged += UpdateVisualStateFromFrameData;
@@ -37,7 +43,9 @@ namespace Managers
         {
             if (!_activePersons.TryGetValue(personData.Id, out var person))
             {
-                
+                var visualElementFactory = new VisualElementFactory(visualizationAssetsConfigSo);
+                person = visualElementFactory.CreatePerson(personData);
+                _activePersons[personData.Id] = person;
             }
 
             person.UpdateState(personData);
@@ -45,14 +53,22 @@ namespace Managers
 
         private void RemoveInactivePersons(HashSet<int> updatedIds)
         {
-            
+            foreach (var id in new List<int>(_activePersons.Keys))
+            {
+                if (!updatedIds.Contains(id))
+                {
+                    Destroy(_activePersons[id].gameObject);
+                    _activePersons.Remove(id);
+                }
+            }
         }
 
         private void UpdateBallState(BallData ballData)
         {
             if (_instantiatedBall == null)
             {
-                
+                var visualElementFactory = new VisualElementFactory(visualizationAssetsConfigSo);
+                _instantiatedBall = visualElementFactory.CreateBall(ballData);
             }
             else
             {
@@ -60,7 +76,7 @@ namespace Managers
             }
         }
 
-        
+
         private void OnDisable()
         {
             MatchStateManager.Instance.OnFrameDataChanged -= UpdateVisualStateFromFrameData;

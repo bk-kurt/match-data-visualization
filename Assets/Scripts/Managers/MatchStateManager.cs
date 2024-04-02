@@ -15,9 +15,14 @@ namespace Managers
         private const float TimePerFrame = 0.03f;
         private bool _isPlaying = true;
 
+        public void InitializeMatchState(FrameData frameData)
+        {
+            CurrentFrame = frameData;
+            OnFrameDataChanged?.Invoke(frameData);
+        }
         void Update()
         {
-            if (!_isPlaying || MatchDataManager.Instance.allFrameData.Count == 0) return;
+            if (!_isPlaying || MatchDataManager.Instance.AllFrameData.Count == 0) return;
 
             _timeSinceLastFrameChange += Time.deltaTime;
             if (Math.Abs(_timeSinceLastFrameChange) >= TimePerFrame)
@@ -29,18 +34,13 @@ namespace Managers
 
         private void AdvanceFrame()
         {
-            var frameCount = MatchDataManager.Instance.allFrameData.Count;
+            var frameCount = MatchDataManager.Instance.AllFrameData.Count;
 
             _currentFrameIndex = (_currentFrameIndex + 1) % frameCount;
-            CurrentFrame = MatchDataManager.Instance.allFrameData[_currentFrameIndex];
+            CurrentFrame = MatchDataManager.Instance.AllFrameData[_currentFrameIndex];
+            Debug.Log("currentFrameIndex"+_currentFrameIndex);
             
             OnFrameDataChanged?.Invoke(CurrentFrame);
-        }
-
-        public void UpdateGameState(FrameData frameData)
-        {
-            CurrentFrame = frameData;
-            OnFrameDataChanged?.Invoke(frameData);
         }
         
         public void TogglePlayback(bool play)

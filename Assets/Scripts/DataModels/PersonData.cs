@@ -1,5 +1,9 @@
+using UnityEngine;
+using Utilities;
+
 namespace DataModels
 {
+    [System.Serializable]
     public class PersonData
     {
         public int Id;
@@ -10,5 +14,9 @@ namespace DataModels
         public int JerseyNumber;
         public AnimationContext AnimationContext;
         public PersonContext PersonContext;
+
+        // Assuming default values for missing data
+        public Vector3 targetPosition => UtilityMethods.ArrayToVector3(Position);
+        public Quaternion TargetRotation => PersonContext.rotation;
     }
 }
