@@ -14,7 +14,7 @@ namespace Managers
         [Range(-3, 3)] public float playbackSpeed = 1f;
         private float _timeSinceLastFrameChange = 0f;
         private const float TimePerFrame = 0.03f;
-        private bool _isPlaying = true;
+        private bool _isPlaying;
 
         public void InitializeMatchState(FrameData frameData)
         {

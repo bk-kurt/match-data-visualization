@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 using UnityEngine.Serialization;
 using Utilities;
 
@@ -11,6 +12,7 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
     public FrameDataStorage frameDataStorage;
     public bool IsDataLoaded { get; private set; }
 
+    // This method remains largely unchanged but is now more aware of the incremental update capabilities of FrameDataStorage.
     public async Task LoadJsonDataAsync(string path)
     {
         try
@@ -21,16 +23,25 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
                 return;
             }
 
-            string jsonContent = await FileUtils.ReadFileAsync(path);
+            string jsonContent = await Task.Run(() => File.ReadAllText(path));
 
-            // wrap to 1 object
-            jsonContent = "{\"items\":" + jsonContent + "}";
+            FrameDataList frameDataList = JsonUtility.FromJson<FrameDataList>("{\"items\":" + jsonContent + "}");
 
-            FrameDataList frameDataList = JsonUtility.FromJson<FrameDataList>(jsonContent);
-            frameDataStorage.LoadFrameData(frameDataList.items); // This operation is synchronous, so i odnt need to await
+            // for corrupted or meaningless data cases
+            // we can also take the advantage of a creating a custom internal Data Validation microservice
+            List<FrameData> validFrames;
+            if (VisualizationSettingsProvider.CurrentSettings.isValidationEnabled)
+            {
+                validFrames = frameDataList.items.Where(frame => frame.IsValid()).ToList();
+                Debug.Log($"Valid frames count: {validFrames.Count}");
+            }
+            else
+            {
+                validFrames = frameDataList.items;
+            }
+
+            frameDataStorage.IncrementallyUpdateFrameData(validFrames);
             IsDataLoaded = true;
-
-            Debug.Log($"Data loaded successfully with {frameDataStorage.frameDataList.Count} frames.");
         }
         catch (Exception e)
         {
@@ -40,18 +51,13 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
 
     public FrameData GetFrameDataAtIndex(int index)
     {
-        if (index >= 0 && index < frameDataStorage.frameDataList.Count)
-        {
-            return frameDataStorage.frameDataList[index];
-        }
-
-        Debug.LogError("Index out of range.");
-        return null;
+        return frameDataStorage.GetFrameDataAtIndex(index);
     }
+
 
     public int GetFrameCount()
     {
-        return frameDataStorage.frameDataList.Count;
+        return frameDataStorage.frameDataList?.Count ?? 0;
     }
 }
 
