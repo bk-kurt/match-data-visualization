@@ -25,8 +25,8 @@ namespace DefaultNamespace
             _initialPersonData = personData;
             UpdateState(personData);
 
-            
-            UI.Initialize("defaultname");
+            string mappedName = PersonNameMapper.GetMappedNameById(personData.Id);
+            UI.Initialize(mappedName);
         }
 
         public override void UpdateState(IInterpolatedStateData interpolatedStateData)
