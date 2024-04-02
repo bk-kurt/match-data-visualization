@@ -7,7 +7,7 @@ using Utilities;
 
 public class MatchDataManager : MonoSingleton<MatchDataManager>
 {
-    public List<FrameData> AllFrameData { get; private set; } = new List<FrameData>();
+    public List<FrameData> AllFrameData { get; private set; } = new();
     public bool IsDataLoaded { get; private set; }
     
     public async Task LoadJsonDataAsync(string path)
@@ -35,6 +35,24 @@ public class MatchDataManager : MonoSingleton<MatchDataManager>
         {
             Debug.LogError($"Failed to load and parse the JSON data: {e.Message}");
         }
+    }
+    
+    public FrameData GetFrameDataAtIndex(int index)
+    {
+        if (index >= 0 && index < AllFrameData.Count)
+        {
+            return AllFrameData[index];
+        }
+        else
+        {
+            Debug.LogError("Index out of range.");
+            return null;
+        }
+    }
+
+    public int GetFrameCount()
+    {
+        return AllFrameData.Count;
     }
 }
 

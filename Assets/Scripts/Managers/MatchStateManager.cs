@@ -46,5 +46,18 @@ namespace Managers
         {
             _isPlaying = play;
         }
+
+        public void SetCurrentFrameIndex(int index)
+        {
+            if (index >= 0 && index < MatchDataManager.Instance.GetFrameCount())
+            {
+                _currentFrameIndex = index;
+                InitializeMatchState(MatchDataManager.Instance.GetFrameDataAtIndex(_currentFrameIndex));
+            }
+        }
+        public int GetCurrentFrameIndex()
+        {
+            return _currentFrameIndex;
+        }
     }
 }
