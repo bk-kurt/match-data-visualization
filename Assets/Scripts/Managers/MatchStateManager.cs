@@ -38,7 +38,6 @@ namespace Managers
 
             _currentFrameIndex = (_currentFrameIndex + 1) % frameCount;
             CurrentFrame = MatchDataManager.Instance.AllFrameData[_currentFrameIndex];
-            Debug.Log("currentFrameIndex"+_currentFrameIndex);
             
             OnFrameDataChanged?.Invoke(CurrentFrame);
         }

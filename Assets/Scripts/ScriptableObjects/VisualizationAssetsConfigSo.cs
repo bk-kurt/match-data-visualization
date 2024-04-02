@@ -23,7 +23,6 @@ public class VisualizationAssetsConfigSo : ScriptableObject
 
     public BallConfigSo GetConfiguredBall(/* potential parameters*/)
     {
-        // For now, simply returns the default ball configuration.
         return defaultBallConfig;
     }
 }

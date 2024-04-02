@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using DataModels;
 using DefaultNamespace;
 using GamePlay;
-using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 namespace Managers
 {
     public class MatchVisualizationManager : MonoSingleton<MatchVisualizationManager>
     {
-        [SerializeField] private VisualizationAssetsConfigSo visualizationAssetsConfigSo;
+        private IVisualizationAssetConfiguration _visualizationAssetConfiguration;
+        private VisualElementFactory _visualElementFactory;
 
         private readonly Dictionary<int, Person> _activePersons = new();
         private Ball _instantiatedBall;
@@ -20,6 +19,12 @@ namespace Managers
             MatchStateManager.Instance.OnFrameDataChanged += UpdateVisualStateFromFrameData;
         }
 
+        public void SetGameAssetConfiguration(IVisualizationAssetConfiguration visualizationAssetConfiguration)
+        {
+            _visualizationAssetConfiguration = visualizationAssetConfiguration;
+            _visualElementFactory = new VisualElementFactory(_visualizationAssetConfiguration.GetGameAssetsConfig());
+        }
+        
         private void UpdateVisualStateFromFrameData(FrameData frameData)
         {
             UpdatePersonsState(frameData.Persons);
@@ -43,8 +48,7 @@ namespace Managers
         {
             if (!_activePersons.TryGetValue(personData.Id, out var person))
             {
-                var visualElementFactory = new VisualElementFactory(visualizationAssetsConfigSo);
-                person = visualElementFactory.CreatePerson(personData);
+                person = _visualElementFactory.CreatePerson(personData);
                 _activePersons[personData.Id] = person;
             }
 
@@ -67,8 +71,7 @@ namespace Managers
         {
             if (_instantiatedBall == null)
             {
-                var visualElementFactory = new VisualElementFactory(visualizationAssetsConfigSo);
-                _instantiatedBall = visualElementFactory.CreateBall(ballData);
+                _instantiatedBall = _visualElementFactory.CreateBall(ballData);
             }
             else
             {

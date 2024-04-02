@@ -4,9 +4,9 @@ using DefaultNamespace.GamePlay;
 
 namespace GamePlay
 {
-    public class VisualElementFactory
+    public class VisualElementFactory: IVisualElementFactory
     {
-        private VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
+        private readonly VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
 
         public VisualElementFactory(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
         {
