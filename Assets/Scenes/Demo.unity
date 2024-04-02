@@ -333,12 +333,11 @@ GameObject:
   - component: {fileID: 1301553018}
   - component: {fileID: 1301553020}
   - component: {fileID: 1301553019}
-  - component: {fileID: 1301553022}
   - component: {fileID: 1301553021}
+  - component: {fileID: 1301553022}
   - component: {fileID: 1301553026}
   - component: {fileID: 1301553023}
   - component: {fileID: 1301553024}
-  - component: {fileID: 1301553025}
   m_Layer: 0
   m_Name: VisualizationManager
   m_TagString: Untagged
@@ -411,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a11fa91fccb4d9ba5200797e3200f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VisualizationSettingsSo: {fileID: 11400000, guid: 05a6cec5c6b9a499fa949dd63d90eab4, type: 2}
 --- !u!114 &1301553023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,19 +436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb2b94c8088443f68725726e92c0ac7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1301553025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301553017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6662d378696049b98162217127cf759d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  commonInterpolationSpeed: 0.5
 --- !u!114 &1301553026
 MonoBehaviour:
   m_ObjectHideFlags: 0

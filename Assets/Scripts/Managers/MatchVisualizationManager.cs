@@ -11,7 +11,7 @@ namespace Managers
 {
     public class MatchVisualizationManager : MonoSingleton<MatchVisualizationManager>
     {
-        private readonly Dictionary<int, Person> _activePersons = new Dictionary<int, Person>();
+        private readonly Dictionary<int, Person> _activePersons = new();
         private Ball _instantiatedBall;
         
         private VisualizationAssetsConfigSo _visualizationAssetsConfigSo;

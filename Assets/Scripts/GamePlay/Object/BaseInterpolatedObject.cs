@@ -1,37 +1,68 @@
 using DataModels;
-using Settings;
+using Managers;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
     public abstract class BaseInterpolatedObject : MonoBehaviour
     {
-        protected Vector3 TargetPosition;
-        private readonly Quaternion _targetRotation = Quaternion.identity;
+        private static VisualizationSettingsSo InterpolationSettings => VisualizationSettingsProvider.CurrentSettings;
+
+
+        private Vector3 _targetPosition;
+        private Quaternion _targetRotation = Quaternion.identity;
+        private Vector3 _positionVelocity = Vector3.zero;
+        private float _positionSmoothTime;
+        private float _rotationSmoothTime;
 
         protected virtual void Update()
         {
-            float positionSmoothing = VisualizationSettings.Instance.commonInterpolationSpeed*Time.deltaTime;
-            float rotationSmoothing = VisualizationSettings.Instance.commonInterpolationSpeed*Time.deltaTime;
+            if (InterpolationSettings == null)
+            {
+                Debug.Log("interpolation settings is null");
+                return;
+            }
+            if (!InterpolationSettings.isInterpolationEnabled) return;
 
-            // InterpolatePosition(positionSmoothing);
-            // InterpolateRotation(rotationSmoothing);
+            AdjustInterpolationSpeed();
+            AdjustRotationSpeed();
+
+            InterpolatePosition();
+            InterpolateRotation();
         }
 
-        private void InterpolatePosition(float smoothing)
+        private void InterpolatePosition()
         {
-            transform.position = Vector3.Lerp(transform.position, TargetPosition, smoothing);
+            _positionSmoothTime = InterpolationSettings.commonPositionInterpolationSpeed;
+            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity,
+                _positionSmoothTime);
         }
 
-        private void InterpolateRotation(float smoothing)
+        private void InterpolateRotation()
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, smoothing);
+            _rotationSmoothTime = InterpolationSettings.commonRotationInterpolationSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, _rotationSmoothTime);
+        }
+
+        private void AdjustInterpolationSpeed()
+        {
+            float distance = Vector3.Distance(transform.position, _targetPosition);
+            // Adjust _positionSmoothTime based on distance
+            _positionSmoothTime = Mathf.Clamp(distance / 10f, 0.1f, 0.5f); // Example values, adjust as needed
+        }
+
+        private void AdjustRotationSpeed()
+        {
+            float angle = Quaternion.Angle(transform.rotation, _targetRotation);
+            // Adjust _rotationSmoothTime based on the angular difference
+            _rotationSmoothTime = Mathf.Clamp(angle / 90f, 0.1f, 0.5f); // Example values, adjust as needed
         }
 
         public virtual void UpdateState(IInterpolatedStateData interpolatedStateData)
         {
-            transform.position = interpolatedStateData.TargetPosition;
-            transform.rotation = interpolatedStateData.TargetRotation;
+            _targetPosition = interpolatedStateData.TargetPosition;
+            _targetRotation = interpolatedStateData.TargetRotation;
+            // Ensure this method does not conflict with smooth interpolation logic
         }
     }
 }
