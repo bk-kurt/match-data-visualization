@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b7cb80ae1042b4a84a887c2eb08831, type: 3}
   m_Name: PersonConfig_1
   m_EditorClassIdentifier: 
-  personPrefab: {fileID: 8754129525032449211, guid: 59ab7f33887184a16ae2979bf6c560dc, type: 3}
+  personPrefab: {fileID: 4485803020790210975, guid: 090c8a2835e8f4e20ab8a0c0f55254af, type: 3}
   teamSide: 1
