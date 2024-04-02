@@ -8,6 +8,10 @@ public class ConfigurationManager : MonoSingleton<ConfigurationManager>
 
     private VisualizationAssetsConfigSo _currentConfig;
 
+    // an option I decided to not use is=
+    // providing a dynamic Configuration via interfaces, but on very frequent config updates it can cause a big workload
+    
+    // futher cases. I can convert all configured entities to an observer,for more flexibility
     
     // can be commanded by upper level configuration management system controlled by the user
     public void SetConfiguration(VisualizationAssetsConfigSo newConfig)

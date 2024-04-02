@@ -17,9 +17,9 @@ namespace Managers
             _matchStateManager = MatchStateManager.Instance;
             _matchVisualizationManager = MatchVisualizationManager.Instance;
             
-            //fetches the current configuration and applies it to the MatchVisualizationManager.
-            //This is a good approach, as it decouples the MatchVisualizationManager from directly
-            //depending on the VisualizationAssetConfigurationProvider.
+            // fetches the current configuration and applies it to the MatchVisualizationManager.
+            //This approach saves the MatchVisualizationManager from directly depending on the
+            // VisualizationAssetConfigurationProvider.
             ConfigurationManager.Instance.SetConfiguration(VisualizationAssetConfigurationProvider.GetGameAssetsConfig());
             StartConfig();
         }

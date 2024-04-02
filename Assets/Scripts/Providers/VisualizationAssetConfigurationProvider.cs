@@ -9,12 +9,6 @@ namespace Providers
     {
         [SerializeField] private VisualizationAssetsConfigSo visualizationAssetsConfigSo;
 
-        private void Awake()
-        {
-            // sample coded
-            // ConfigurationManager.Instance.SetConfiguration(visualizationAssetsConfigSo);
-        }
-
         public VisualizationAssetsConfigSo GetGameAssetsConfig()
         {
             return visualizationAssetsConfigSo;
