@@ -22,7 +22,7 @@ namespace DefaultNamespace
         {
             var ballData = interpolatedStateData as BallData;
             base.UpdateState(ballData);
-            Controller.ApplyTopLevelChanges();
+            Controller.ApplyTopLevelChanges(interpolatedStateData);
         }
     }
 }

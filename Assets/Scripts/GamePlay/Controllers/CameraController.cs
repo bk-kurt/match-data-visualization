@@ -1,8 +1,9 @@
 using UnityEngine;
+using Utilities;
 
 namespace GamePlay.Controllers
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : MonoSingleton<CameraController>
     {
         private Transform _target;
 

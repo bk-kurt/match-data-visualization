@@ -16,22 +16,27 @@ namespace GamePlay
                 return null;
             }
 
-            PersonConfigSo personConfigSo = visualizationAssetsConfigSo.GetConfiguredPersonByTeamSide(personData.TeamSide);
+            PersonConfigSo personConfigSo =
+                visualizationAssetsConfigSo.GetConfiguredPersonByTeamSide(personData.TeamSide);
             if (personConfigSo == null || personConfigSo.personPrefab == null)
             {
-                Debug.LogError($"PersonFactory: Person configuration or prefab is null for team side {personData.TeamSide}.");
+                Debug.LogError(
+                    $"PersonFactory: Person configuration or prefab is null for team side " +
+                    $"{personData.TeamSide}.");
                 return null;
             }
 
             Vector3 personPosition = personData.TargetPosition;
-            Person instantiatedPersonGo = Object.Instantiate(personConfigSo.personPrefab, personPosition, Quaternion.identity);
-            
+            var parentTransform = EnvironmentSetUp.Instance.teamTransforms[personData.TeamSide];
+            Person instantiatedPersonGo = Object.Instantiate(personConfigSo.personPrefab, personPosition,
+                Quaternion.identity, parentTransform);
+
             Person personComponent = instantiatedPersonGo.GetComponent<Person>();
             if (personComponent == null)
             {
                 personComponent = instantiatedPersonGo.AddComponent<Person>();
             }
-            
+
             personComponent.Initialize(personData);
             return personComponent;
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DataModels;
 using DefaultNamespace;
 using GamePlay;
+using GamePlay.Controllers;
 using Utilities;
 
 namespace Managers
@@ -24,7 +25,7 @@ namespace Managers
             _visualizationAssetConfiguration = visualizationAssetConfiguration;
             _visualElementFactory = new VisualElementFactory(_visualizationAssetConfiguration.GetGameAssetsConfig());
         }
-        
+
         private void UpdateVisualStateFromFrameData(FrameData frameData)
         {
             UpdatePersonsState(frameData.Persons);
@@ -72,6 +73,7 @@ namespace Managers
             if (_instantiatedBall == null)
             {
                 _instantiatedBall = _visualElementFactory.CreateBall(ballData);
+                CameraController.Instance.SetTarget(_instantiatedBall.gameObject.transform);
             }
             else
             {

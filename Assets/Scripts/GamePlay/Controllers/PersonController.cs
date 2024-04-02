@@ -15,9 +15,10 @@ namespace GamePlay.Controllers
         private bool _lastIsRunningState;
         private float _lastSpeed = -1;
 
-        public void ApplyTopLevelChanges()
+        public void ApplyTopLevelChanges(IInterpolatedStateData interpolatedStateData)
         {
-            // AdjustAnimationBasedOnSpeed(personData.Speed);
+            PersonData personData = (PersonData)interpolatedStateData;
+            AdjustAnimationBasedOnSpeed(personData.Speed);
         }
 
 
@@ -44,6 +45,5 @@ namespace GamePlay.Controllers
                 _lastSpeed = newSpeed;
             }
         }
-        
     }
 }

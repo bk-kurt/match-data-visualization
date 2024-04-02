@@ -1,4 +1,9 @@
-public interface ITopLevelController
+using DataModels;
+
+namespace DefaultNamespace
 {
-    void ApplyTopLevelChanges();
+    public interface ITopLevelController
+    {
+        void ApplyTopLevelChanges(IInterpolatedStateData interpolatedStateData);
+    }
 }

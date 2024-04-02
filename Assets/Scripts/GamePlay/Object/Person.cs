@@ -42,7 +42,7 @@ namespace DefaultNamespace
                 BallEventManager.Instance.ChangeBallPossession(personData);
             }
 
-            Controller.ApplyTopLevelChanges();
+            Controller.ApplyTopLevelChanges(interpolatedStateData);
         }
 
         private void HandleBallPossessionChange(int playerId, Possession possession) //999
