@@ -15,8 +15,6 @@ namespace DataModels
         public int JerseyNumber;
         public AnimationContext AnimationContext;
         public PersonContext PersonContext;
-
-        // Assuming default values for missing data
         public Vector3 TargetPosition => UtilityMethods.ArrayToVector3(Position);
         public Quaternion TargetRotation => PersonContext.rotation;
     }

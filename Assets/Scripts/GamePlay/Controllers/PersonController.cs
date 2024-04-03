@@ -14,6 +14,7 @@ namespace GamePlay.Controllers
             if (interpolatedStateData is PersonData personData)
             {
                 AdjustAnimationBasedOnSpeed(personData.Speed);
+                // AdjustRotationBasedOnSpeed(personData.Speed);
             }
         }
 
@@ -35,6 +36,27 @@ namespace GamePlay.Controllers
                 animator.SetFloat(TopLevelPersonAnimaVariables.SpeedHash, CalculateAdjustedSpeed(newSpeed, isRunning));
             }
         }
+        /// <summary>
+        /// // since the movement orientation data is not correct, this can function as PlaceHolder rotation
+        /// </summary>
+        /// <param name="newSpeed"></param>
+        private void AdjustRotationBasedOnSpeed(float newSpeed)
+        {
+            if (newSpeed > 0)
+            {
+                // Calculate a forward direction based on the character's current rotation and speed
+                Vector3 forwardDirection = transform.forward + transform.right * (newSpeed * 1);
+                Vector3 targetPoint = transform.position + forwardDirection * 5;
+
+                // Create a target rotation based on the new target point
+                Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+
+                // Smoothly rotate towards the target rotation
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 1);
+            }
+        }
+
+
 
         private float CalculateAdjustedSpeed(float speed, bool isRunning)
         {
