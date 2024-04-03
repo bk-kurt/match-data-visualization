@@ -1,8 +1,9 @@
 using System;
+using Managers.Data;
 using UnityEngine;
 using Utilities;
 
-namespace Managers
+namespace Managers.State
 {
     public class MatchStateManager : MonoSingleton<MatchStateManager>
     {

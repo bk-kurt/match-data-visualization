@@ -3,7 +3,7 @@ using DataModels;
 using GamePlay.Factory;
 using Utilities;
 
-namespace Managers
+namespace Managers.Object
 {
     public class PersonManager : MonoSingleton<PersonManager>
     {

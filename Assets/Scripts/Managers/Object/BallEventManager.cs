@@ -2,7 +2,7 @@ using System;
 using DataModels;
 using Utilities;
 
-namespace Managers
+namespace Managers.Object
 {
     public class BallEventManager : MonoSingleton<BallEventManager>
     {

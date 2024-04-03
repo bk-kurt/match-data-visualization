@@ -2,7 +2,7 @@ using Scriptables.Configuration;
 using UnityEngine;
 using Utilities;
 
-namespace Managers
+namespace Managers.Configuration
 {
     public class ConfigurationManager : MonoSingleton<ConfigurationManager>
     {

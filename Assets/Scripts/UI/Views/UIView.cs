@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UI.Screen
+namespace UI.Views
 {
     public abstract class UIView : MonoBehaviour
     {

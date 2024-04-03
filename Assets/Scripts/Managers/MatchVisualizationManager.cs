@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using GamePlay;
 using GamePlay.Factory;
+using Managers.Configuration;
+using Managers.Object;
 using Scriptables.Configuration;
 using Utilities;
 

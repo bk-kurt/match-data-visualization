@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataModels
+namespace DataModels.Contexts
 {
     [System.Serializable]
     public class PersonContext

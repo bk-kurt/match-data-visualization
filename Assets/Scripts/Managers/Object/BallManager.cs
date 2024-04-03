@@ -3,7 +3,7 @@ using GamePlay.Controllers;
 using GamePlay.Factory;
 using Utilities;
 
-namespace Managers
+namespace Managers.Object
 {
     public class BallManager : MonoSingleton<BallManager>
     {

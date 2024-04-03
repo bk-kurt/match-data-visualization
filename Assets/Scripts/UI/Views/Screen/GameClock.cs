@@ -1,7 +1,7 @@
-using DataModels;
+using DataModels.Contexts;
 using UnityEngine.UI;
 
-namespace UI.Screen
+namespace UI.Views.Screen
 {
     public class GameClock : UIView
     {

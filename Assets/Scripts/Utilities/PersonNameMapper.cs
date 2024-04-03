@@ -13,7 +13,7 @@ namespace Utilities
             
             foreach (var person in data.Persons)
             {
-                playerNameMap.Add(person.Id,$"Sneijer {i++}");  // we can GetPersonNameFrom football team roster CSV or DB
+                playerNameMap.Add(person.Id,$"Sneijer {i++}");  // we can GetPersonNameFrom football team roster DB.
             }
         }
 

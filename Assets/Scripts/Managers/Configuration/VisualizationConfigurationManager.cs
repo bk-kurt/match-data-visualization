@@ -1,7 +1,7 @@
 using Scriptables.Configuration;
 using Utilities;
 
-namespace Managers
+namespace Managers.Configuration
 {
     // this is tier level config management compared to ConfigurationManager.cs,
     // atm has no usage but very applicable in firther

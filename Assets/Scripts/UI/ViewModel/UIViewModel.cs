@@ -1,10 +1,10 @@
 using System;
-using DataModels;
-using Managers;
+using DataModels.Contexts;
+using Managers.State;
 using UnityEngine;
 using Utilities;
 
-namespace UI.Screen
+namespace UI.ViewModel
 {
     public class UIViewModel : MonoSingleton<UIViewModel>
     {

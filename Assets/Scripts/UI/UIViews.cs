@@ -1,4 +1,6 @@
-using DataModels;
+using DataModels.Contexts;
+using UI.ViewModel;
+using UI.Views.Screen;
 using UnityEngine;
 
 namespace UI.Screen

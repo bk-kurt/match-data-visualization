@@ -1,12 +1,12 @@
-using DataModels;
-using Managers;
+using DataModels.Contexts;
+using Managers.Data;
 using UnityEngine;
 
 namespace Utilities
 {
     public static class TimeHelper
     {
-        // Calculate game clock from timestamp
+        // calculate game clock from timestamp
         public static GameClockContext ClockContextFromTimeStamp(float timeStamp)
         {
             int periodDurationInSeconds = 60 * 45;

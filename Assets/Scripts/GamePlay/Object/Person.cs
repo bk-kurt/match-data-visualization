@@ -1,8 +1,8 @@
 using DataModels;
-using DefaultNamespace;
 using GamePlay.Controllers;
-using Managers;
+using Managers.Object;
 using Scriptables.Configuration;
+using UI.Views.World;
 using UnityEngine;
 using Utilities;
 

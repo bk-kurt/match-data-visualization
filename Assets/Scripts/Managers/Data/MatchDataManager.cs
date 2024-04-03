@@ -15,7 +15,7 @@ using Utilities;
 // 3rd party data environments plays a powerful role, that way preferences an corruptions can be handled safer.
 // by making this application's architecture close to modification
 
-namespace Managers
+namespace Managers.Data
 {
     public class MatchDataManager : MonoSingleton<MatchDataManager>
     {

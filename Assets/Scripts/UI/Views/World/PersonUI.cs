@@ -1,9 +1,10 @@
+using UI.Views;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefaultNamespace
+namespace UI.Views.World
 {
-    public class PersonUI : MonoBehaviour
+    public class PersonUI : UIView
     {
         public Text displayName;
         public Image highlightImage;
