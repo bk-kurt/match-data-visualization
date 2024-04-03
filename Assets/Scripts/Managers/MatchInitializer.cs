@@ -29,21 +29,29 @@ namespace Managers
                 visualizationAssetConfigurationProvider.GetGameAssetsConfig());
             StartConfig();
         }
-
+        
+        private void StartConfig()
+        {
+            var config = ConfigurationManager.Instance.GetCurrentConfiguration();
+            if (config != null)
+            {
+                _matchVisualizationManager.SetGameAssetConfiguration(config);
+            }
+            else
+            {
+                Debug.LogError("ConfigurationManager does not have a current configuration.");
+            }
+        }
+        
         private void Start()
         {
-            StartWithLoadedData();
-        }
-
-        public void StartWithLoadedData()
-        {
-            if (_matchDataManager.GetFrameCount() > 0)
+            if (_matchDataManager.HasFrameData())
             {
                 InitializeMatch();
             }
             else
             {
-                Debug.LogError("Failed to load frame data or data is empty trying again.");
+                Debug.LogWarning("Failed to load prepared frame data or data is empty, preparing again...");
                 StartCoroutine(StartLoadingData());
             }
         }
@@ -66,19 +74,6 @@ namespace Managers
         {
             var initialFrameData = _matchDataManager.GetFrameDataAtIndex(0);
             _matchStateManager.InitializeMatchState(initialFrameData);
-        }
-
-        private void StartConfig()
-        {
-            var config = ConfigurationManager.Instance.GetCurrentConfiguration();
-            if (config != null)
-            {
-                _matchVisualizationManager.SetGameAssetConfiguration(config);
-            }
-            else
-            {
-                Debug.LogError("ConfigurationManager does not have a current configuration.");
-            }
         }
 
         private IEnumerator LoadGameDataAsync(string path)

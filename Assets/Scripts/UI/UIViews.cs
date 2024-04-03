@@ -3,7 +3,7 @@ using UI.ViewModel;
 using UI.Views.Screen;
 using UnityEngine;
 
-namespace UI.Screen
+namespace UI
 {
     public class UIViews : MonoBehaviour
     {

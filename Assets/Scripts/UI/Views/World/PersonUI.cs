@@ -1,5 +1,3 @@
-using UI.Views;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Views.World

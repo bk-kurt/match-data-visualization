@@ -10,9 +10,9 @@ namespace Managers.State
         // since our visualization is basically relying on frame data,
         // the architecture should be reactive and powered by frame based signals and their advancement.
         public event Action<FrameData> OnFrameAdvanced;
+        public bool IsPlaying { get; private set; }
         private FrameData CurrentFrame { get; set; }
         private int _currentFrameIndex;
-        public bool IsPlaying { get; private set; }
 
         [Range(-3, 3)] public float playbackSpeed = 1f;
         private float _timeSinceLastFrameChange = 0f;
@@ -30,7 +30,7 @@ namespace Managers.State
         // more dynamic, responsive and consistent application takes the adv of good set of conditions.
         private void Update()
         {
-            if (!IsPlaying || MatchDataManager.Instance.GetFrameCount() == 0) return;
+            if (!IsPlaying || !MatchDataManager.Instance.HasFrameData()) return;
 
             _timeSinceLastFrameChange += Time.deltaTime * playbackSpeed;
             if (Math.Abs(_timeSinceLastFrameChange) >= TimePerFrame)

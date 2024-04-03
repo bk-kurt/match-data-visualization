@@ -114,6 +114,10 @@ namespace Managers.Data
         }
 
 
+        public bool HasFrameData()
+        {
+            return GetFrameCount() > 0;
+        }
         public int GetFrameCount()
         {
             return frameDataStorage.frameDataList?.Count ?? 0;
