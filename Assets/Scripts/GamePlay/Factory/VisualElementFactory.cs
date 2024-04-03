@@ -1,8 +1,10 @@
-using DataModels;
-using DefaultNamespace;
-using DefaultNamespace.GamePlay;
 
-namespace GamePlay
+
+using DataModels;
+using Scriptables.Configuration;
+
+
+namespace GamePlay.Factory
 {
     public class VisualElementFactory: IVisualElementFactory
     {

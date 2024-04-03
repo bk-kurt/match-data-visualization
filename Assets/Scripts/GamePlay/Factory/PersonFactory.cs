@@ -1,10 +1,10 @@
 using DataModels;
-using DefaultNamespace;
-using ScriptableObjects;
+using GamePlay.Environment;
+using Scriptables.Configuration;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace GamePlay
+namespace GamePlay.Factory
 {
     public static class PersonFactory
     {

@@ -1,8 +1,10 @@
-using UnityEngine;
+using Scriptables.Configuration;
 using Utilities;
 
 namespace Managers
 {
+    // this is tier level config management compared to ConfigurationManager.cs,
+    // atm has no usage but very applicable in firther
     public class VisualizationConfigurationManager : MonoSingleton<VisualizationConfigurationManager>
     {
         private VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
@@ -12,20 +14,19 @@ namespace Managers
             ConfigurationManager.Instance.OnConfigurationChanged += SetGameAssetConfiguration;
         }
 
-        public void SetGameAssetConfiguration(VisualizationAssetsConfigSo config)
+        private void SetGameAssetConfiguration(VisualizationAssetsConfigSo config)
         {
             _visualizationAssetsConfigSo = config;
-            // Notify other managers or elements that need to refresh based on the new configuration
+            // notify other managers or elements that need to refresh based on the new configuration
             NotifyConfigChange(_visualizationAssetsConfigSo);
         }
 
         private void NotifyConfigChange(VisualizationAssetsConfigSo config)
         {
-            // Implement notification logic here.
-            // This might involve calling a method on other managers or broadcasting an event.
+            // to be implemented in demand
         }
 
-        protected void OnDisable()
+        private void OnDisable()
         {
             ConfigurationManager.Instance.OnConfigurationChanged -= SetGameAssetConfiguration;
         }

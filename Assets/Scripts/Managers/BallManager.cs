@@ -1,8 +1,6 @@
-using UnityEngine;
 using DataModels;
-using DefaultNamespace;
-using GamePlay;
 using GamePlay.Controllers;
+using GamePlay.Factory;
 using Utilities;
 
 namespace Managers
@@ -22,7 +20,9 @@ namespace Managers
             if (_instantiatedBall == null)
             {
                 _instantiatedBall = _visualElementFactory.CreateBall(ballData);
-                CameraController.Instance.SetTarget(_instantiatedBall.transform);
+                
+                // for now, skipping to use a camera management system, simply assigning here.
+                CameraController.Instance.SetTarget(_instantiatedBall.transform); 
             }
             else
             {

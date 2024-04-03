@@ -2,7 +2,6 @@ using System;
 using DataModels;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 namespace UI.Screen

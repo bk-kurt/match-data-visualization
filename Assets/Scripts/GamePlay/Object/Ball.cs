@@ -1,9 +1,9 @@
 using DataModels;
 using GamePlay.Controllers;
+using Scriptables.Configuration;
 using UnityEngine;
 
-namespace DefaultNamespace
-{
+
     public class Ball : BaseInterpolatedObject
     {
         [SerializeField] private BallController Controller;
@@ -32,4 +32,3 @@ namespace DefaultNamespace
             throw new System.NotImplementedException();
         }
     }
-}

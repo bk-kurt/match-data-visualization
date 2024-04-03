@@ -1,5 +1,4 @@
 using DataModels;
-using DefaultNamespace;
 using UnityEngine;
 
 namespace GamePlay.Controllers

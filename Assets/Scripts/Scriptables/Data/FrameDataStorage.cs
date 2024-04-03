@@ -8,89 +8,93 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FrameDataStorage", menuName = "GameData/FrameDataStorage")]
-public class FrameDataStorage : ScriptableObject
+
+namespace Scriptables.Data
 {
-    public List<FrameData> frameDataList;
-
-    public event Action<List<FrameData>> OnFrameDataUpdated;
-
-    // we dont need to grab entire dataset all the time, so then incrementally process
-    public void IncrementallyUpdateFrameData(List<FrameData> updatedFrameData)
+    [CreateAssetMenu(fileName = "FrameDataStorage", menuName = "GameData/FrameDataStorage")]
+    public class FrameDataStorage : ScriptableObject
     {
-        frameDataList ??= new List<FrameData>();
+        public List<FrameData> frameDataList;
 
-        foreach (var frame in updatedFrameData)
+        public event Action<List<FrameData>> OnFrameDataUpdated;
+
+        // we dont need to grab entire dataset all the time, so then incrementally process
+        public void IncrementallyUpdateFrameData(List<FrameData> updatedFrameData)
         {
-            // it's a new update or modification? then handle accordingly.
-            var existingFrame = frameDataList.Find(f => f.FrameCount == frame.FrameCount);
-            if (existingFrame == null)
+            frameDataList ??= new List<FrameData>();
+
+            foreach (var frame in updatedFrameData)
             {
-                frameDataList.Add(frame);
+                // it's a new update or modification? then handle accordingly.
+                var existingFrame = frameDataList.Find(f => f.FrameCount == frame.FrameCount);
+                if (existingFrame == null)
+                {
+                    frameDataList.Add(frame);
+                }
+                else
+                {
+                    // Update existing frame data here if needed
+                }
             }
-            else
-            {
-                // Update existing frame data here if needed
-            }
+
+            OnFrameDataUpdated?.Invoke(frameDataList);
         }
 
-        OnFrameDataUpdated?.Invoke(frameDataList);
-    }
-
-    public FrameData GetFrameDataAtIndex(int index)
-    {
-        if (index >= 0 && index < frameDataList.Count)
+        public FrameData GetFrameDataAtIndex(int index)
         {
-            return frameDataList[index];
-        }
+            if (index >= 0 && index < frameDataList.Count)
+            {
+                return frameDataList[index];
+            }
 
-        Debug.LogError("Index out of range.");
-        return null;
-    }
-
-
-    // I believe these two methods below would do a good job on dealing with streaming data.
-    public FrameData GetLatestFrameData()
-    {
-        if (frameDataList == null || frameDataList.Count == 0)
-        {
-            Debug.LogWarning("No frame data available.");
+            Debug.LogError("Index out of range.");
             return null;
         }
 
-        return frameDataList[^1];
-    }
 
-    public FrameData GetFrameDataByTime(float timestamp)
-    {
-        var frame = frameDataList.FirstOrDefault(f => f.TimestampUtc <= timestamp);
-
-        if (frame == null)
+        // I believe these two methods below would do a good job on dealing with streaming data.
+        public FrameData GetLatestFrameData()
         {
-            Debug.LogWarning($"No frame data found for timestamp: {timestamp}");
+            if (frameDataList == null || frameDataList.Count == 0)
+            {
+                Debug.LogWarning("No frame data available.");
+                return null;
+            }
+
+            return frameDataList[^1];
         }
 
-        return frame;
-    }
-
-    public FrameData GetLatestValidFrameData()
-    {
-        if (frameDataList == null || frameDataList.Count == 0)
+        public FrameData GetFrameDataByTime(float timestamp)
         {
-            Debug.LogWarning("No frame data available.");
+            var frame = frameDataList.FirstOrDefault(f => f.TimestampUtc <= timestamp);
+
+            if (frame == null)
+            {
+                Debug.LogWarning($"No frame data found for timestamp: {timestamp}");
+            }
+
+            return frame;
+        }
+
+        public FrameData GetLatestValidFrameData()
+        {
+            if (frameDataList == null || frameDataList.Count == 0)
+            {
+                Debug.LogWarning("No frame data available.");
+                return null;
+            }
+
+            // data meets the criteria?
+            for (int i = frameDataList.Count - 1; i >= 0; i--)
+            {
+                if (frameDataList[i].IsValid())
+                {
+                    return frameDataList[i];
+                }
+            }
+
+            Debug.LogWarning("No valid frame data found.");
             return null;
         }
-
-        // data meets the criteria?
-        for (int i = frameDataList.Count - 1; i >= 0; i--)
-        {
-            if (frameDataList[i].IsValid())
-            {
-                return frameDataList[i];
-            }
-        }
-
-        Debug.LogWarning("No valid frame data found.");
-        return null;
     }
 }

@@ -1,28 +1,31 @@
 using System.Collections.Generic;
-using ScriptableObjects;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameAssets", menuName = "ScriptableObjects/VisualizationAssets", order = 1)]
-public class VisualizationAssetsConfigSo : ScriptableObject
+namespace Scriptables.Configuration
 {
-    public List<PersonConfigSo> personConfigs;
-    public BallConfigSo defaultBallConfig;
-
-    public PersonConfigSo GetConfiguredPersonByTeamSide(int teamSide)
+    [CreateAssetMenu(fileName = "GameAssets", menuName = "ScriptableObjects/VisualizationAssets", order = 1)]
+    public class VisualizationAssetsConfigSo : ScriptableObject
     {
-        foreach (var config in personConfigs)
+        public List<PersonConfigSo> personConfigs;
+        public BallConfigSo defaultBallConfig;
+
+        public PersonConfigSo GetConfiguredPersonByTeamSide(int teamSide)
         {
-            if (config.teamSide == teamSide)
+            foreach (var config in personConfigs)
             {
-                return config;
+                if (config.teamSide == teamSide)
+                {
+                    return config;
+                }
             }
-        }
-        Debug.LogError($"No PersonConfiguration found for team side: {teamSide}");
-        return null;
-    }
 
-    public BallConfigSo GetConfiguredBall(/* potential parameters*/)
-    {
-        return defaultBallConfig;
+            Debug.LogError($"No PersonConfiguration found for team side: {teamSide}");
+            return null;
+        }
+
+        public BallConfigSo GetConfiguredBall( /* potential parameters*/)
+        {
+            return defaultBallConfig;
+        }
     }
 }

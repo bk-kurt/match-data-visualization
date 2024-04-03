@@ -1,10 +1,11 @@
 using System.Collections;
 using Providers;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Managers
 {
+    // in more defined product, I would create/use a custom dependency wrapper or use Zenject,
+    // followed by scene set up config. but for a flexible project building, leaving that for this iteration.
     public class MatchInitializer : MonoBehaviour
     {
         [SerializeField] private VisualizationAssetConfigurationProvider visualizationAssetConfigurationProvider;
@@ -26,21 +27,42 @@ namespace Managers
             StartConfig();
         }
 
-        IEnumerator Start()
+        private void Start()
+        {
+            StartWithLoadedData();
+        }
+
+        public void StartWithLoadedData()
+        {
+            if (_matchDataManager.GetFrameCount() > 0)
+            {
+                InitializeMatch();
+            }
+            else
+            {
+                Debug.LogError("Failed to load frame data or data is empty trying again.");
+                StartCoroutine(StartLoadingData());
+            }
+        }
+
+        IEnumerator StartLoadingData()
         {
             yield return LoadGameDataAsync("Assets/Data/Applicant-test-1.JSON");
 
             if (_matchDataManager.IsDataLoaded && _matchDataManager.GetFrameCount() > 0)
             {
-                var initialFrameData = _matchDataManager.GetFrameDataAtIndex(0);
-                _matchStateManager.InitializeMatchState(initialFrameData);
-
-                _matchStateManager.TogglePlayback(true);
+                InitializeMatch();
             }
             else
             {
                 Debug.LogError("Failed to load frame data or data is empty.");
             }
+        }
+
+        private void InitializeMatch()
+        {
+            var initialFrameData = _matchDataManager.GetFrameDataAtIndex(0);
+            _matchStateManager.InitializeMatchState(initialFrameData);
         }
 
         private void StartConfig()

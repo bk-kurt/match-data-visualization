@@ -1,22 +1,28 @@
+using Scriptables.Settings;
 using UnityEngine;
 
-public static class VisualizationSettingsProvider
+
+namespace Providers
 {
-    private static VisualizationSettingsSo _currentSettings;
-    
-    public static VisualizationSettingsSo CurrentSettings
+    public static class VisualizationSettingsProvider
     {
-        get
+        private static VisualizationSettingsSo _currentSettings;
+
+        public static VisualizationSettingsSo CurrentSettings
         {
-            if (_currentSettings == null)
+            get
             {
-                // I decided to not reference this via one of managers, because
-                // Once the settings object is loaded from the resources
-                // it's kept in memory and reused across the application
-                // its efficient way to access these settings without repetitively loading from disk
-                _currentSettings = Resources.Load<VisualizationSettingsSo>($"Settings/VisualizationSettings");
+                if (_currentSettings == null)
+                {
+                    // I decided to not reference this via one of managers, because
+                    // Once the settings object is loaded from the resources
+                    // it's kept in memory and reused across the application
+                    // its efficient way to access these settings without repetitively loading from disk
+                    _currentSettings = Resources.Load<VisualizationSettingsSo>($"Settings/VisualizationSettings");
+                }
+
+                return _currentSettings;
             }
-            return _currentSettings;
         }
     }
 }

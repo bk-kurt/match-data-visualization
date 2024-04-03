@@ -1,6 +1,4 @@
-using System;
-using DefaultNamespace;
-using Managers;
+using Scriptables.Configuration;
 using UnityEngine;
 
 namespace Providers

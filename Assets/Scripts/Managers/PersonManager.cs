@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using DataModels;
-using DefaultNamespace;
-using GamePlay;
+using GamePlay.Factory;
 using Utilities;
 
 namespace Managers
@@ -10,7 +8,6 @@ namespace Managers
     public class PersonManager : MonoSingleton<PersonManager>
     {
         private readonly Dictionary<int, Person> _activePersons = new();
-
         private VisualElementFactory _visualElementFactory;
 
         public void SetVisualElementFactory(VisualElementFactory factory)

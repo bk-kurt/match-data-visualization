@@ -1,6 +1,5 @@
 using System;
 using DataModels;
-using DefaultNamespace;
 using UnityEngine;
 
 namespace GamePlay.Controllers
@@ -29,7 +28,7 @@ namespace GamePlay.Controllers
             bool isRunning = newSpeed >= topLevelPersonAnimaVariables.runningSpeedThreshold;
             animator.SetBool(TopLevelPersonAnimaVariables.IsRunningHash, isRunning);
 
-            // avoid recalculating if unnecessary
+            // avoid unnecessary recalculations
             if (Math.Abs(animator.GetFloat(TopLevelPersonAnimaVariables.SpeedHash) - newSpeed) >
                 topLevelPersonAnimaVariables.speedCalculationTolerance)
             {
@@ -51,7 +50,7 @@ namespace GamePlay.Controllers
         public float runningSpeedThreshold = 2f;
         public float speedCalculationTolerance = 0.1f;
         public float walkingSpeedMultiplier = 0.5f;
-        public float runningSpeedMultiplier = 0.4f;
+        public float runningSpeedMultiplier = 0.25f;
 
         public static readonly int SpeedHash = Animator.StringToHash("Speed");
         public static readonly int IsRunningHash = Animator.StringToHash("isRunning");

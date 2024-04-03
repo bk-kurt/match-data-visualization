@@ -1,8 +1,6 @@
-using DefaultNamespace;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace ScriptableObjects
+namespace Scriptables.Configuration
 {
     [CreateAssetMenu(fileName = "GameAssets", menuName = "ScriptableObjects/PersonConfiguration", order = 1)]
     public class PersonConfigSo : ScriptableObject

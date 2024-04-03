@@ -2,19 +2,24 @@ using System;
 using DataModels;
 using Utilities;
 
-public class BallEventManager : MonoSingleton<BallEventManager>
+namespace Managers
 {
-    public event Action<int, Possession> OnBallPossessionChanged;
-
-    public void ChangeBallPossession(PersonData personData)
+    public class BallEventManager : MonoSingleton<BallEventManager>
     {
-        OnBallPossessionChanged?.Invoke(personData.Id,
-            personData.PersonContext.HasBallPossession ? InterpretPossession(personData.TeamSide) : Possession.None);
-    }
+        public event Action<int, Possession> OnBallPossessionChanged;
 
-    private Possession InterpretPossession(int teamSide)
-    {
-        // todo
-        return teamSide == 0 ? Possession.HomeTeam : Possession.AwayTeam;
+        public void ChangeBallPossession(PersonData personData)
+        {
+            OnBallPossessionChanged?.Invoke(personData.Id,
+                personData.PersonContext.HasBallPossession
+                    ? InterpretPossession(personData.TeamSide)
+                    : Possession.None);
+        }
+
+        private Possession InterpretPossession(int teamSide)
+        {
+            // todo
+            return teamSide == 0 ? Possession.HomeTeam : Possession.AwayTeam;
+        }
     }
 }

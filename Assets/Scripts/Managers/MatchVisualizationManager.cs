@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using GamePlay;
-using UnityEngine;
+using GamePlay.Factory;
+using Scriptables.Configuration;
 using Utilities;
 
 namespace Managers
 {
     public class MatchVisualizationManager : MonoSingleton<MatchVisualizationManager>
     {
-        protected void OnEnable()
+        private void OnEnable()
         {
             ConfigurationManager.Instance.OnConfigurationChanged += SetGameAssetConfiguration;
         }

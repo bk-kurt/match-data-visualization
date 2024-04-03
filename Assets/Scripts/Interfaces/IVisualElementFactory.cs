@@ -1,7 +1,3 @@
-namespace DefaultNamespace
+public interface IVisualElementFactory
 {
-    public interface IVisualElementFactory
-    {
-        
-    }
 }

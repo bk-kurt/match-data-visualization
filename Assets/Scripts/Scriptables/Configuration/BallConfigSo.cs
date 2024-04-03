@@ -1,7 +1,6 @@
-using DefaultNamespace;
 using UnityEngine;
 
-namespace ScriptableObjects
+namespace Scriptables.Configuration
 {
     [CreateAssetMenu(fileName = "GameAssets", menuName = "ScriptableObjects/BallConfiguration", order = 1)]
     public class BallConfigSo : ScriptableObject

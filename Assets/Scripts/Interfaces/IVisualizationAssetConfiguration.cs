@@ -1,7 +1,6 @@
-namespace DefaultNamespace
+using Scriptables.Configuration;
+
+public interface IVisualizationAssetConfiguration
 {
-    public interface IVisualizationAssetConfiguration
-    {
-        VisualizationAssetsConfigSo GetGameAssetsConfig();
-    }
+    VisualizationAssetsConfigSo GetGameAssetsConfig();
 }

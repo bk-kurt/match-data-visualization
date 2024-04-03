@@ -2,7 +2,7 @@ using Managers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.Extentions
+namespace Editor.Visualization.Extentions
 {
     [CustomEditor(typeof(MatchStateManager))]
     public class MatchStateManagerInspector : UnityEditor.Editor
@@ -16,7 +16,7 @@ namespace Editor.Extentions
             int maxFrameIndex = 0;
             if (MatchDataManager.Instance != null && MatchDataManager.Instance.frameDataStorage.frameDataList != null)
             {
-                // determine the slider's max value
+                // determine slider's max value
                 maxFrameIndex = Mathf.Max(0, MatchDataManager.Instance.frameDataStorage.frameDataList.Count - 1);
             }
 
