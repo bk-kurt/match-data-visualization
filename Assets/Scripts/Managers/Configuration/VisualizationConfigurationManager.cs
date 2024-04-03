@@ -4,7 +4,6 @@ using Utilities;
 namespace Managers.Configuration
 {
     // this is tier level config management compared to ConfigurationManager.cs,
-    // atm has no usage but very applicable in firther
     public class VisualizationConfigurationManager : MonoSingleton<VisualizationConfigurationManager>
     {
         private VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
@@ -17,8 +16,8 @@ namespace Managers.Configuration
         private void SetGameAssetConfiguration(VisualizationAssetsConfigSo config)
         {
             _visualizationAssetsConfigSo = config;
-            // notify other managers or elements that need to refresh based on the new configuration
             NotifyConfigChange(_visualizationAssetsConfigSo);
+            // notify others that need to refresh by the new config or config swap
         }
 
         private void NotifyConfigChange(VisualizationAssetsConfigSo config)

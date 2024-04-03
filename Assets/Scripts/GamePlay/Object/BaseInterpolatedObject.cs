@@ -3,7 +3,8 @@ using Providers;
 using Scriptables.Settings;
 using UnityEngine;
 
-
+// I noticed a frame-independent interpolation facility is needed in a frame-manipulated environment. 
+// With the help of this interpolation we can even interpolate while jumping between distinct timestamps (frame indexes)!!
 public abstract class BaseInterpolatedObject : MonoBehaviour
 {
     private static VisualizationSettingsSo InterpolationSettings => VisualizationSettingsProvider.CurrentSettings;
@@ -48,21 +49,18 @@ public abstract class BaseInterpolatedObject : MonoBehaviour
     private void AdjustInterpolationSpeed()
     {
         float distance = Vector3.Distance(transform.position, _targetPosition);
-        // Adjust _positionSmoothTime based on distance
-        _positionSmoothTime = Mathf.Clamp(distance / 10f, 0.1f, 0.5f); // Example values, adjust as needed
+        _positionSmoothTime = Mathf.Clamp(distance / 10f, 0.1f, 0.5f);
     }
 
     private void AdjustRotationSpeed()
     {
         float angle = Quaternion.Angle(transform.rotation, _targetRotation);
-        // Adjust _rotationSmoothTime based on the angular difference
-        _rotationSmoothTime = Mathf.Clamp(angle / 90f, 0.1f, 0.5f); // Example values, adjust as needed
+        _rotationSmoothTime = Mathf.Clamp(angle / 90f, 0.1f, 0.5f);
     }
 
     public virtual void UpdateState(IInterpolatedStateData interpolatedStateData)
     {
         _targetPosition = interpolatedStateData.TargetPosition;
         _targetRotation = interpolatedStateData.TargetRotation;
-        // Ensure this method does not conflict with smooth interpolation logic
     }
 }

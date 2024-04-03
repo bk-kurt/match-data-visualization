@@ -1,6 +1,6 @@
 // using scriptable object as a storage is advantageous,
 // unity more efficienty uses memory with scriptables,
-// also we can ease the time-wide operations, develop tools and perform QA easier.
+// also we can ease the time-wide operations, develop editor/other tools and perform QA easier.
 
 
 using System;

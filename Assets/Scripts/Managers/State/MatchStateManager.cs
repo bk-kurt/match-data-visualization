@@ -74,5 +74,10 @@ namespace Managers.State
         {
             return _currentFrameIndex;
         }
+
+        private void OnDisable()
+        {
+            TogglePlayback(false);
+        }
     }
 }

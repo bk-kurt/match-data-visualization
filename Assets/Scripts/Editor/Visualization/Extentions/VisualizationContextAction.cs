@@ -9,21 +9,22 @@ namespace Editor.Visualization.Extentions
 {
     public static class VisualizationContextAction
     {
-        [MenuItem("Assets/>> Visualize JSON", true)]
+        [MenuItem("Assets/>> Visualize JSON", true, priority: 0)]
         private static bool ValidateOpenCustomLayout()
         {
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             return !EditorApplication.isPlaying && (path.EndsWith(".json") || path.EndsWith(".JSON"));
         }
 
-        [MenuItem("Assets/>> Visualize JSON")]
+        [MenuItem("Assets/>> Visualize JSON", false, priority: 0)]
         private static void OpenCustomLayout()
         {
-            string targetScenePath = "Assets/Scenes/Demo.unity";
+            // scene reference is left hard coded for now.
+            string targetScenePath = "Assets/Scenes/Visualization_Demo.unity";
 
             if (!System.IO.File.Exists(targetScenePath))
             {
-                Debug.LogError("Scene file not found: " + targetScenePath);
+                Debug.LogWarning("Scene file not found: " + targetScenePath+"please rename a scene");
                 return;
             }
 

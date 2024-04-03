@@ -10,22 +10,23 @@ namespace UI.ViewModel
     {
         public event Action<MatchScoreContext> OnScoreChanged;
         public event Action<GameClockContext> OnClockUpdated;
-        
+
         private MatchScoreContext _lastKnownScore;
         private const float UpdateInterval = 0.1f;
-        private float _lastUpdateTime = 0f;
+        private float _lastUpdateTime;
 
 
-        void OnEnable()
+        private void OnEnable()
         {
             MatchStateManager.Instance.OnFrameAdvanced += OnGameAdvanced;
         }
 
-        void OnDisable()
-        {
-            MatchStateManager.Instance.OnFrameAdvanced -= OnGameAdvanced;
-        }
-
+        /// <summary>
+        /// selectively notifies, because constant notification by frame unit is not efficient
+        /// not the state of art application of selective/dynamic ui notification, due to conditional checks disadvantage.
+        /// I may review design.
+        /// </summary>
+        /// <param name="frameData"></param>
         private void OnGameAdvanced(FrameData frameData)
         {
             if (frameData == null)
@@ -51,7 +52,22 @@ namespace UI.ViewModel
 
         private bool HasScoreChanged(MatchScoreContext newScoreContext)
         {
-            return _lastKnownScore.HomeScore != newScoreContext.HomeScore || _lastKnownScore.AwayScore != newScoreContext.AwayScore;
+            return _lastKnownScore.HomeScore != newScoreContext.HomeScore ||
+                   _lastKnownScore.AwayScore != newScoreContext.AwayScore;
+        }
+
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            if (MatchStateManager.Instance)
+            {
+                MatchStateManager.Instance.OnFrameAdvanced -= OnGameAdvanced;
+            }
         }
     }
 }

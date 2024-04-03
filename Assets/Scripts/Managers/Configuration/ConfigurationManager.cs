@@ -12,10 +12,14 @@ namespace Managers.Configuration
 
         private VisualizationAssetsConfigSo _currentConfig;
 
-        // an option I decided to not use is=
+
+        // <summary>
+        // I decided to not use interfaces=
         // providing a dynamic Configuration via interfaces, but on very frequent config updates it can cause a big workload
         // futher cases. I can convert all configured entities to an observer,for more flexibility
         // can be commanded by upper level configuration management system controlled by the user
+        // </summary>
+        /// <param name="newConfig"></param>
         public void SetConfiguration(VisualizationAssetsConfigSo newConfig)
         {
             if (newConfig == null)

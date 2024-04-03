@@ -14,7 +14,7 @@ namespace Providers
             {
                 if (_currentSettings == null)
                 {
-                    // I decided to not reference this via one of managers, because
+                    // I decided to not reference VisualizationSettings via one of managers, because
                     // Once the settings object is loaded from the resources
                     // it's kept in memory and reused across the application
                     // its efficient way to access these settings without repetitively loading from disk

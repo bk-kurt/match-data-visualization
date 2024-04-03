@@ -23,7 +23,11 @@ namespace Managers.Data
         public bool IsDataLoaded { get; private set; }
         public event Action OnDataLoadingComplete;
 
-        // this method is aware of the incremental update capabilities of FrameDataStorage
+
+        /// <summary>
+        /// this method is designed aware of the incremental update capabilities of FrameDataStorage.
+        /// </summary>
+        /// <param name="path"></param>
         public async Task LoadJsonDataAsync(string path)
         {
             var progressIndicator = new Progress<float>(progress =>
@@ -55,6 +59,22 @@ namespace Managers.Data
             }
         }
 
+        /// <summary>
+        /// Why I preferred Task.Run over ReadFileAsync?
+        ///
+        /// 
+        /// 1- more beyond Constraints:there are limitations with Unity's JSON utilities dealing with
+        /// large files where reading the file in chunks and processing them incrementally is beneficial.
+        /// 
+        /// 2- complex data processing : JSON processing or validation is CPU-intensive or
+        /// requires running synchronous code asynchronously, Task.Run is better.
+        /// 
+        /// 3- reporting progress. Task.Run allows easy integration for
+        /// progress reporting w/ synchronous - CPU used works.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="progressIndicator"></param>
+        /// <returns></returns>
         private static async Task<string> JsonContent(string path, Progress<float> progressIndicator)
         {
             string jsonContent = await Task.Run(() =>
@@ -99,7 +119,6 @@ namespace Managers.Data
             return frameDataStorage.frameDataList?.Count ?? 0;
         }
     }
-    
 }
 
 

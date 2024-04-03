@@ -1,11 +1,10 @@
-using Managers;
 using Managers.Data;
 using Managers.State;
 using Scriptables.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.Visualization
+namespace Editor.Windows
 {
     public class MatchStateEditorWindow : EditorWindow
     {
@@ -25,6 +24,28 @@ namespace Editor.Visualization
         }
 
         private void OnGUI()
+        {
+            if (SetUpDependencies()) return;
+
+            _maxFrameIndex = Mathf.Max(0, _matchDataManager.GetFrameCount() - 1);
+            _playbackSpeed = _matchStateManager.playbackSpeed;
+
+            EditorGUI.BeginChangeCheck();
+            DrawSliders();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                _matchStateManager.SetCurrentFrameIndex(_currentFrameIndex);
+                _matchStateManager.playbackSpeed = _playbackSpeed;
+            }
+            
+            DrawButtons();
+            
+            _frameDataStorage = (FrameDataStorage)EditorGUILayout.ObjectField("Frame Data Storage", _frameDataStorage,
+                typeof(FrameDataStorage), false);
+        }
+
+        private bool SetUpDependencies()
         {
             if (_matchStateManager == null)
             {
@@ -46,35 +67,53 @@ namespace Editor.Visualization
             {
                 EditorGUILayout.HelpBox("Match Data Manager or Match State Manager is not available.",
                     MessageType.Warning);
-                return;
+                return true;
             }
 
-            _maxFrameIndex = Mathf.Max(0, _matchDataManager.GetFrameCount() - 1);
-            _playbackSpeed = _matchStateManager.playbackSpeed;
+            return false;
+        }
 
-            EditorGUI.BeginChangeCheck();
-            _currentFrameIndex =
-                EditorGUILayout.IntSlider("Current Frame Index", _matchStateManager.GetCurrentFrameIndex(), 0, _maxFrameIndex);
-            _playbackSpeed = EditorGUILayout.Slider("Playback Speed", _playbackSpeed, -3f, 3f);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                _matchStateManager.SetCurrentFrameIndex(_currentFrameIndex);
-                _matchStateManager.playbackSpeed = _playbackSpeed;
-            }
-
-            if (EditorApplication.isPlaying && GUILayout.Button(_matchStateManager.IsPlaying ? "Pause" : "Play"))
+        private void DrawButtons()
+        {
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace(); 
+            
+            if (EditorApplication.isPlaying &&
+                GUILayout.Button(_matchStateManager.IsPlaying ? "Pause" : "Play", GUILayout.Width(200)))
             {
                 _matchStateManager.TogglePlayback(!_matchStateManager.IsPlaying);
             }
-
+            GUILayout.FlexibleSpace(); 
+            GUILayout.EndHorizontal();
+            
             if (GUILayout.Button(!EditorApplication.isPlaying ? "Start visualization" : "End visualization"))
             {
                 EditorApplication.isPlaying = !EditorApplication.isPlaying;
             }
+            
+            
+            
+            GUILayout.Space(10);
+        }
 
-            _frameDataStorage = (FrameDataStorage)EditorGUILayout.ObjectField("Frame Data Storage", _frameDataStorage,
-                typeof(FrameDataStorage), false);
+        private void DrawSliders()
+        {
+            GUILayout.Space(10);
+            
+            _currentFrameIndex =
+                EditorGUILayout.IntSlider("Current Frame Index", _matchStateManager.GetCurrentFrameIndex(), 0,
+                    _maxFrameIndex);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            _playbackSpeed = EditorGUILayout.Slider("Playback Speed", _playbackSpeed, -3f, 3f, GUILayout.Width(400));
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(10);
         }
 
         private void OnFocus()
