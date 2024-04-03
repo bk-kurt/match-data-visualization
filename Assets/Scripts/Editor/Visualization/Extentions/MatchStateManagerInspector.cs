@@ -16,10 +16,10 @@ namespace Editor.Visualization.Extentions
             DrawDefaultInspector();
 
             int maxFrameIndex = 0;
-            if (MatchDataManager.Instance != null && MatchDataManager.Instance.frameDataStorage.frameDataList != null)
+            if (MatchDataLoader.Instance != null && MatchDataLoader.Instance.frameDataStorage.frameDataList != null)
             {
                 // determine slider's max value
-                maxFrameIndex = Mathf.Max(0, MatchDataManager.Instance.frameDataStorage.frameDataList.Count - 1);
+                maxFrameIndex = Mathf.Max(0, MatchDataLoader.Instance.frameDataStorage.frameDataList.Count - 1);
             }
 
             EditorGUI.BeginChangeCheck();

@@ -4,16 +4,16 @@ namespace Utilities
 {
     public static class PersonNameMapper
     {
-        private static Dictionary<int, string> playerNameMap = new Dictionary<int, string>();
+        private static readonly Dictionary<int, string> PlayerNameMap = new Dictionary<int, string>();
         
         public static void PopulateMap(FrameData data)
         {
-            playerNameMap.Clear();
+            PlayerNameMap.Clear();
             int i=0;
             
             foreach (var person in data.Persons)
             {
-                playerNameMap.Add(person.Id,$"Sneijer {i++}");  // we can GetPersonNameFrom football team roster DB.
+                PlayerNameMap.Add(person.Id,$"Sneijer {i++}");  // we can GetPersonNameFrom football team roster DB.
             }
         }
 
@@ -23,9 +23,9 @@ namespace Utilities
             string playerName = "Unknown";
 
       
-            if (playerNameMap.ContainsKey(id))
+            if (PlayerNameMap.TryGetValue(id, out var value))
             {
-                playerName = playerNameMap[id];
+                playerName = value;
             }
             else
             {

@@ -7,87 +7,76 @@ using UnityEngine;
 
 namespace Managers
 {
-    // in more defined product, I would create/use a custom dependency wrapper or use Zenject,
-    // followed by scene set up config. but for a flexible project building, leaving that for this iteration.
+    // in a defined larger project that has CI/CD and QA concerns, I would follow ServiceLocator pattern or use Zenject,
+    // and would populate scene following that and configs. but for simple project like this, not preferring that for now.
     public class MatchInitializer : MonoBehaviour
     {
         [SerializeField] private VisualizationAssetConfigurationProvider visualizationAssetConfigurationProvider;
         private MatchStateManager _matchStateManager;
-        private MatchDataManager _matchDataManager;
+        private MatchDataLoader _matchDataLoader;
         private MatchVisualizationManager _matchVisualizationManager;
 
-        void Awake()
+        /// <summary>
+        /// I put in use OnEnable instead of awake, although singletons are lazy loaded,
+        /// just make sure for scaled and heavy scenarios scenarios.
+        /// </summary>
+        private void OnEnable()
         {
-            _matchDataManager = MatchDataManager.Instance;
+            _matchDataLoader = MatchDataLoader.Instance;
             _matchStateManager = MatchStateManager.Instance;
             _matchVisualizationManager = MatchVisualizationManager.Instance;
+
 
             // fetches the current configuration and applies it to the MatchVisualizationManager.
             //This approach saves the MatchVisualizationManager from directly depending on the
             // VisualizationAssetConfigurationProvider.
             ConfigurationManager.Instance.SetConfiguration(
                 visualizationAssetConfigurationProvider.GetGameAssetsConfig());
-            StartConfig();
+            ApplyConfiguration();
         }
-        
-        private void StartConfig()
+
+        private void ApplyConfiguration()
         {
             var config = ConfigurationManager.Instance.GetCurrentConfiguration();
-            if (config != null)
-            {
-                _matchVisualizationManager.SetGameAssetConfiguration(config);
-            }
-            else
+            if (!config)
             {
                 Debug.LogError("ConfigurationManager does not have a current configuration.");
+                // we can create a fallback mechanism to request a reconfiguration here
+
+                return;
             }
+            _matchVisualizationManager.SetGameAssetConfiguration(config);
         }
-        
+
         private void Start()
         {
-            if (_matchDataManager.HasFrameData())
-            {
-                InitializeMatch();
-            }
-            else
+            if (!_matchDataLoader.HasFrameData())
             {
                 Debug.LogWarning("Failed to load prepared frame data or data is empty, preparing again...");
                 StartCoroutine(StartLoadingData());
+                return;
             }
+
+            InitializeMatch();
         }
 
         IEnumerator StartLoadingData()
         {
-            yield return LoadGameDataAsync("Assets/Data/Applicant-test-1.JSON");
+            yield return _matchDataLoader.LoadJsonDataAsync("Assets/Data/Applicant-test-1.JSON");
 
-            if (_matchDataManager.IsDataLoaded && _matchDataManager.GetFrameCount() > 0)
-            {
-                InitializeMatch();
-            }
-            else
+            if (!_matchDataLoader.HasInitializableData())
             {
                 Debug.LogError("Failed to load frame data or data is empty.");
+                yield break;
             }
+
+            InitializeMatch();
         }
 
         private void InitializeMatch()
         {
-            var initialFrameData = _matchDataManager.GetFrameDataAtIndex(0);
+            var initialFrameData = _matchDataLoader.GetFrameDataAtIndex(0);
             _matchStateManager.InitializeMatchState(initialFrameData);
-        }
-
-        private IEnumerator LoadGameDataAsync(string path)
-        {
-            var loadTask = _matchDataManager.LoadJsonDataAsync(path);
-            while (!loadTask.IsCompleted)
-            {
-                yield return null;
-            }
-
-            if (loadTask.Exception != null)
-            {
-                Debug.LogError($"Error loading data: {loadTask.Exception}");
-            }
         }
     }
 }

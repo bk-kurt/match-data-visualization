@@ -31,10 +31,10 @@ namespace Editor.Visualization.Extentions
             OpenSceneIfNeeded(targetScenePath);
 
             string jsonFilePath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (MatchDataManager.Instance != null)
+            if (MatchDataLoader.Instance != null)
             {
-                MatchDataManager.Instance.OnDataLoadingComplete += HandleDataLoadingComplete;
-                MatchDataManager.Instance.LoadJsonDataAsync(jsonFilePath).ConfigureAwait(false);
+                MatchDataLoader.Instance.OnDataLoadingComplete += HandleDataLoadingComplete;
+                MatchDataLoader.Instance.LoadJsonDataAsync(jsonFilePath).ConfigureAwait(false);
             }
             else
             {
@@ -61,7 +61,7 @@ namespace Editor.Visualization.Extentions
 
         private static void HandleDataLoadingComplete()
         {
-            MatchDataManager.Instance.OnDataLoadingComplete -= HandleDataLoadingComplete;
+            MatchDataLoader.Instance.OnDataLoadingComplete -= HandleDataLoadingComplete;
 
             string layoutPath = "Assets/Resources/Layouts/Visualization-02.wlt";
             if (System.IO.File.Exists(layoutPath))

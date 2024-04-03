@@ -11,7 +11,7 @@ namespace Utilities
         {
             int periodDurationInSeconds = 60 * 45;
             
-            float matchStartTime = MatchDataManager.Instance.GetFrameDataAtIndex(0).TimestampUtc;
+            float matchStartTime = MatchDataLoader.Instance.GetFrameDataAtIndex(0).TimestampUtc;
             
             int totalSeconds = Mathf.RoundToInt(timeStamp - matchStartTime);
             

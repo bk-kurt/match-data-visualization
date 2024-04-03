@@ -43,7 +43,7 @@ namespace Managers
 
         private void RefreshVisualStateFromConfigData()
         {
-            // Optional: Implement logic to refresh visual elements based on new config.
+            // We could also implement logic to refresh visual elements based on new config
         }
 
         private void OnDisable()

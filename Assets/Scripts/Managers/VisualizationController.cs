@@ -11,7 +11,7 @@ namespace Managers
     {
         public MatchStateManager matchStateManager;
         private MatchVisualizationManager _matchVisualizationManager;
-        private static FrameDataStorage FrameDataStorage => MatchDataManager.Instance.frameDataStorage;
+        private static FrameDataStorage FrameDataStorage => MatchDataLoader.Instance.frameDataStorage;
 
         private void Awake()
         {

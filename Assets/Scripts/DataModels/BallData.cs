@@ -16,7 +16,7 @@ namespace DataModels
         public int JerseyNumber;
         public TrackableBallContext Context;
 
-        public Vector3 TargetPosition => UtilityMethods.ArrayToVector3(Position);
+        public Vector3 TargetPosition => HelperMethods.ArrayToVector3(Position);
         public Quaternion TargetRotation { get; }
     }
 }

@@ -30,7 +30,7 @@ namespace Managers.State
         // more dynamic, responsive and consistent application takes the adv of good set of conditions.
         private void Update()
         {
-            if (!IsPlaying || !MatchDataManager.Instance.HasFrameData()) return;
+            if (!IsPlaying || !MatchDataLoader.Instance.HasFrameData()) return;
 
             _timeSinceLastFrameChange += Time.deltaTime * playbackSpeed;
             if (Math.Abs(_timeSinceLastFrameChange) >= TimePerFrame)
@@ -42,7 +42,7 @@ namespace Managers.State
 
         private void AdvanceFrame()
         {
-            var frameCount = MatchDataManager.Instance.GetFrameCount();
+            var frameCount = MatchDataLoader.Instance.GetFrameCount();
             if (playbackSpeed > 0)
             {
                 _currentFrameIndex = (_currentFrameIndex + 1) % frameCount;
@@ -52,7 +52,7 @@ namespace Managers.State
                 _currentFrameIndex = (_currentFrameIndex - 1 + frameCount) % frameCount;
             }
 
-            CurrentFrame = MatchDataManager.Instance.GetFrameDataAtIndex(_currentFrameIndex);
+            CurrentFrame = MatchDataLoader.Instance.GetFrameDataAtIndex(_currentFrameIndex);
             OnFrameAdvanced?.Invoke(CurrentFrame);
         }
 
@@ -63,10 +63,10 @@ namespace Managers.State
 
         public void SetCurrentFrameIndex(int index)
         {
-            if (index >= 0 && index < MatchDataManager.Instance.GetFrameCount())
+            if (index >= 0 && index < MatchDataLoader.Instance.GetFrameCount())
             {
                 _currentFrameIndex = index;
-                InitializeMatchState(MatchDataManager.Instance.GetFrameDataAtIndex(_currentFrameIndex));
+                InitializeMatchState(MatchDataLoader.Instance.GetFrameDataAtIndex(_currentFrameIndex));
             }
         }
 

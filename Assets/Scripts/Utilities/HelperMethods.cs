@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Utilities
 {
-    public static class UtilityMethods
+    public static class HelperMethods
     {
         public static Vector3 ArrayToVector3(float[] array)
         {

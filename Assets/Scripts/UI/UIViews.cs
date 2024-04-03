@@ -29,14 +29,20 @@ namespace UI
             }
         }
 
-        public void UpdateScoreBoard(MatchScoreContext scoreContext)
+        private void UpdateScoreBoard(MatchScoreContext scoreContext)
         {
-            scoreboard.UpdateUI(scoreContext);
+            if (scoreboard) // null check will no longer be needed with dep.initialization system
+            {
+                scoreboard.UpdateUI(scoreContext);
+            }
         }
 
-        public void UpdateClock(GameClockContext clockContext)
+        private void UpdateClock(GameClockContext clockContext)
         {
-            gameClock.UpdateUI(clockContext);
+            if (gameClock)
+            {
+                gameClock.UpdateUI(clockContext);
+            }
         }
     }
 }
