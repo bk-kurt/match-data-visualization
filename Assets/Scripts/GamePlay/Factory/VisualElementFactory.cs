@@ -6,21 +6,21 @@ namespace GamePlay.Factory
 {
     public class VisualElementFactory: IVisualElementFactory
     {
-        private readonly VisualizationAssetsConfigSo _visualizationAssetsConfigSo;
+        private readonly IVisualizationAssetConfigProvider _visualizationAssetsConfig;
 
-        public VisualElementFactory(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
+        public VisualElementFactory(IVisualizationAssetConfigProvider visualizationAssetsConfigSo)
         {
-            _visualizationAssetsConfigSo = visualizationAssetsConfigSo;
+            _visualizationAssetsConfig = visualizationAssetsConfigSo;
         }
 
         public Person CreatePerson(PersonData personData)
         {
-            return PersonFactory.Create(personData, _visualizationAssetsConfigSo);
+            return PersonFactory.Create(personData);
         }
 
         public Ball CreateBall(BallData ballData)
         {
-            return BallFactory.Create(ballData, _visualizationAssetsConfigSo);
+            return BallFactory.Create(ballData);
         }
     }
 }

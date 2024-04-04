@@ -25,7 +25,7 @@ using UnityEngine;
             Controller.ApplyTopLevelChanges(interpolatedStateData);
         }
 
-        public void RefreshConfig(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
+        public void RefreshConfig(VisualizationAssetsConfigProviderSo visualizationAssetsConfigProviderSo)
         {
             //  this might involve updating the ball's visual effects, textures,
             // or even physics properties to reflect the new configuration.

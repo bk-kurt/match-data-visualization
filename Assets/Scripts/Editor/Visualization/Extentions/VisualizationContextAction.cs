@@ -1,5 +1,8 @@
-using Managers;
+using Interfaces.Configuration;
+using Managers.Configuration;
 using Managers.Data;
+using Providers;
+using Scriptables.Configuration;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,50 +22,75 @@ namespace Editor.Visualization.Extentions
         [MenuItem("Assets/>> Visualize JSON", false, priority: 0)]
         private static void OpenCustomLayout()
         {
-            // scene reference is left hard coded for now.
-            string targetScenePath = "Assets/Scenes/Visualization_Demo.unity";
+            if (IsSceneChangeRequired) return;
+            HandFileLoading();
+        }
 
-            if (!System.IO.File.Exists(targetScenePath))
+        private static void HandFileLoading()
+        {
+            HandleFilePath();
+            
+            if (MatchDataLoader.Instance == null)
             {
-                Debug.LogWarning("Scene file not found: " + targetScenePath+"please rename a scene");
+                Debug.LogError("MatchDataManager instance not found.");
                 return;
             }
 
-            OpenSceneIfNeeded(targetScenePath);
+            MatchDataLoader.Instance.LoadJsonDataAsync().ConfigureAwait(false);
+            MatchDataLoader.Instance.OnDataLoadingComplete += HandleDataLoadingComplete;
+        }
 
-            string jsonFilePath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (MatchDataLoader.Instance != null)
+        private static bool IsSceneChangeRequired
+        {
+            get
             {
-                MatchDataLoader.Instance.OnDataLoadingComplete += HandleDataLoadingComplete;
-                MatchDataLoader.Instance.LoadJsonDataAsync(jsonFilePath).ConfigureAwait(false);
-            }
-            else
-            {
-                Debug.LogError("MatchDataManager instance not found.");
+                string targetScenePath =
+                    "Assets/Scenes/Visualization_Demo.unity"; // left as string for early development cycle
+
+                if (!System.IO.File.Exists(targetScenePath))
+                {
+                    Debug.LogWarning("Scene file not found: " + targetScenePath + "please rename a scene");
+                    return true;
+                }
+
+                string currentScenePath = SceneManager.GetActiveScene().path;
+                if (!currentScenePath.Equals(targetScenePath, System.StringComparison.Ordinal))
+                {
+                    if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                    {
+                        EditorSceneManager.OpenScene(targetScenePath, OpenSceneMode.Single);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Scene switch was canceled by the user.");
+                    }
+                }
+
+                return false;
             }
         }
 
-        private static void OpenSceneIfNeeded(string targetScenePath)
+        private static void HandleFilePath()
         {
-            string currentScenePath = SceneManager.GetActiveScene().path;
-            if (!currentScenePath.Equals(targetScenePath, System.StringComparison.Ordinal))
+            var currentPath = VisualizationSettingsProvider.CurrentSettings.DataPathConfigSo.GetJsonDataPath();
+            string selectedJsonFilePath = AssetDatabase.GetAssetPath(Selection.activeObject);
+
+            if (currentPath != selectedJsonFilePath)
             {
-                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                {
-                    EditorSceneManager.OpenScene(targetScenePath, OpenSceneMode.Single);
-                }
-                else
-                {
-                    Debug.LogWarning("Scene switch was canceled by the user.");
-                    return;
-                }
+                IDataPathConfigProvider dataPathConfigProvider = ScriptableObject.CreateInstance<DataPathConfigSo>();
+                dataPathConfigProvider.SetJsonDataPath(selectedJsonFilePath);
+                ConfigurationManager.Instance.SetDataPathConfiguration(dataPathConfigProvider);
             }
         }
 
         private static void HandleDataLoadingComplete()
         {
             MatchDataLoader.Instance.OnDataLoadingComplete -= HandleDataLoadingComplete;
+            SwitchToFixedLayout();
+        }
 
+        private static void SwitchToFixedLayout()
+        {
             string layoutPath = "Assets/Resources/Layouts/Visualization-02.wlt";
             if (System.IO.File.Exists(layoutPath))
             {

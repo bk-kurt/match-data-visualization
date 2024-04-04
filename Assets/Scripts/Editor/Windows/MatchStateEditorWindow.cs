@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Managers.Data;
 using Managers.State;
 using Scriptables.Data;
@@ -14,32 +16,38 @@ namespace Editor.Windows
         private int _currentFrameIndex;
         private int _maxFrameIndex;
         private float _playbackSpeed;
+        private static bool _hasInitialized;
 
         [MenuItem("Tools/Match State Control")]
-        private static void Init()
+        private static async void Init()
         {
             var window =
-                (MatchStateEditorWindow)GetWindow(typeof(MatchStateEditorWindow), false, "Match State Control", true);
+                GetWindow();
+            await Task.Delay(500);
             window.SetUpDependencies();
             window.Show();
+
+            _hasInitialized = true;
         }
-        
-        private void SetUpDependencies()
+
+        private static MatchStateEditorWindow GetWindow()
         {
-            _matchStateManager = MatchStateManager.Instance;
-            _matchDataLoader = MatchDataLoader.Instance;
-            if (_matchDataLoader != null)
-            {
-                _frameDataStorage = _matchDataLoader.frameDataStorage;
-            }
+            return (MatchStateEditorWindow)GetWindow(typeof(MatchStateEditorWindow), false, "Match State Control",
+                true);
         }
 
         private void OnGUI()
         {
+            if (!_hasInitialized)
+            {
+                Init();
+                return;
+            }
+
             if (!HasDependenciesSet())
             {
-                Debug.LogWarning("Dependencies are not correctly set. Closing window...");;
-                Close();
+                Debug.Log("Lost the Dependencies or not correctly set, reinitializing controller");
+                _hasInitialized = false;
                 return;
             }
 
@@ -61,15 +69,31 @@ namespace Editor.Windows
                 typeof(FrameDataStorage), false);
         }
 
-        private bool HasDependenciesSet()
-        {
-            return _matchDataLoader && _matchStateManager && _matchDataLoader.frameDataStorage;
-        }
 
         private void OnFocus()
         {
+            if (HasDependenciesSet())
+            {
+                return;
+            }
+
             SetUpDependencies();
-            SceneView.RepaintAll();
+        }
+
+
+        private void SetUpDependencies()
+        {
+            _matchStateManager = MatchStateManager.Instance;
+            _matchDataLoader = MatchDataLoader.Instance;
+            if (_matchDataLoader && _matchDataLoader.frameDataStorage)
+            {
+                _frameDataStorage = _matchDataLoader.frameDataStorage;
+            }
+        }
+
+        private bool HasDependenciesSet()
+        {
+            return _matchDataLoader && _matchStateManager && _matchDataLoader.frameDataStorage;
         }
 
         private void DrawButtons()
@@ -114,5 +138,6 @@ namespace Editor.Windows
 
             GUILayout.Space(10);
         }
+        
     }
 }

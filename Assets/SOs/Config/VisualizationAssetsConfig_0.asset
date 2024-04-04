@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c19347fe8ac1412b81ae8fd4b0cc1718, type: 3}
-  m_Name: VisualizationAssetConfig_0
+  m_Name: VisualizationAssetsConfig_0
   m_EditorClassIdentifier: 
   personConfigs:
   - {fileID: 11400000, guid: af740832aaa53425e94ddea39181ad65, type: 2}

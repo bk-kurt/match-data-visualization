@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a1a5d53db74a8a93e71828f6d39466, type: 3}
   m_Name: VisualizationSettings
   m_EditorClassIdentifier: 
+  isValidationEnabled: 1
   isInterpolationEnabled: 1
   commonPositionInterpolationSpeed: 0.1
   commonRotationInterpolationSpeed: 0.1
+  dataPathConfigSo: {fileID: 11400000, guid: 491325368e2af47f6a5fd47fb33fa704, type: 2}

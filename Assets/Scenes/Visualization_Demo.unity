@@ -516,10 +516,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIViewModel
       objectReference: {fileID: 0}
-    - target: {fileID: 774338720360681900, guid: e03e1977c9867437e88a882ddfacfbf4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3917443656952204223, guid: e03e1977c9867437e88a882ddfacfbf4, type: 3}
       propertyPath: m_Pivot.x
       value: 0

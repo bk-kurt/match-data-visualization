@@ -1,3 +1,5 @@
+using System;
+using Interfaces.Configuration;
 using Scriptables.Configuration;
 using UnityEngine;
 using Utilities;
@@ -6,36 +8,61 @@ namespace Managers.Configuration
 {
     public class ConfigurationManager : MonoSingleton<ConfigurationManager>
     {
-        public delegate void ConfigurationChangedDelegate(VisualizationAssetsConfigSo newConfig);
+        [SerializeField] private DataPathConfigSo defaultDataPathConfigSo;
+        [SerializeField] private VisualizationAssetsConfigProviderSo defaultVisualizationAssetsConfigSo;
 
-        public event ConfigurationChangedDelegate OnConfigurationChanged;
+        public event Action<IVisualizationAssetConfigProvider> OnAssetVisualizationConfigChanged;
+        public event Action<IDataPathConfigProvider> OnDataPathConfigChanged;
 
-        private VisualizationAssetsConfigSo _currentConfig;
+        private IVisualizationAssetConfigProvider _currentVisualizationAssetsConfigProvider;
+        private IDataPathConfigProvider _currentDataPathConfig;
 
-
-        // <summary>
-        // I decided to not use interfaces=
-        // providing a dynamic Configuration via interfaces, but on very frequent config updates it can cause a big workload
-        // futher cases. I can convert all configured entities to an observer,for more flexibility
-        // can be commanded by upper level configuration management system controlled by the user
-        // </summary>
-        /// <param name="newConfig"></param>
-        public void SetConfiguration(VisualizationAssetsConfigSo newConfig)
+        private void Awake()
         {
-            if (newConfig == null)
+            SetVisualAssetsConfiguration(defaultVisualizationAssetsConfigSo);
+            SetDataPathConfiguration(defaultDataPathConfigSo);
+        }
+
+        
+        /// <summary>
+        /// we can even set configurations with remote config freely..
+        /// </summary>
+        /// <param name="newConfigProvider"></param>
+        public void SetVisualAssetsConfiguration(IVisualizationAssetConfigProvider newConfigProvider)
+        {
+            if (newConfigProvider == null)
             {
-                Debug.LogError("Attempted to set a null configuration.");
+                Debug.LogError("Attempted to set a null Visual Assets configuration.");
                 return;
             }
 
-            if (_currentConfig != newConfig)
+            if (_currentVisualizationAssetsConfigProvider != newConfigProvider)
             {
-                _currentConfig = newConfig;
-                OnConfigurationChanged?.Invoke(newConfig);
+                _currentVisualizationAssetsConfigProvider = newConfigProvider;
+                OnAssetVisualizationConfigChanged?.Invoke(_currentVisualizationAssetsConfigProvider);
             }
         }
 
+        public IVisualizationAssetConfigProvider GetVisualAssetsConfiguration()
+        {
+            return _currentVisualizationAssetsConfigProvider ?? defaultVisualizationAssetsConfigSo;
+        }
 
-        public VisualizationAssetsConfigSo GetCurrentConfiguration() => _currentConfig;
+        public void SetDataPathConfiguration(IDataPathConfigProvider dataPathConfig)
+        {
+            if (dataPathConfig == null)
+            {
+                Debug.LogError("Attempted to set a null Data Path configuration.");
+                return;
+            }
+
+            _currentDataPathConfig = dataPathConfig;
+            OnDataPathConfigChanged?.Invoke(_currentDataPathConfig);
+        }
+
+        public string GetJsonDataPathConfig()
+        {
+            return _currentDataPathConfig?.GetJsonDataPath() ?? defaultDataPathConfigSo.GetJsonDataPath();
+        }
     }
 }

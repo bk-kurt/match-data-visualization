@@ -31,6 +31,11 @@ namespace Managers
 
         private void HandleFrameAdvanced(FrameData currentFrame)
         {
+            if (!matchStateManager.IsPlaying)
+            {
+                return;
+            }
+
             _matchVisualizationManager.UpdateVisualStateFromFrameData(currentFrame);
         }
 

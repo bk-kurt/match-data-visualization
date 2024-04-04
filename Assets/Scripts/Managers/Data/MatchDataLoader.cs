@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System;
+using Managers.Configuration;
 using Providers;
+using Scriptables.Configuration;
 using Scriptables.Data;
 using UnityEditor;
 using Utilities;
@@ -11,7 +13,7 @@ using Utilities.Data;
 
 // the parsed JSON file was primarily prepared/formatted externally using Python, I estimate that the delegation is better choice
 // since unity Json capabilities are limited and requires additional dependencies if tried. Also i estimate that in a data oriented pipeline,
-// python environments plays a powerful role, that way preferences an corruptions can be handled safer.
+// python environments plays a powerful role, that way preferences and corruptions can be handled safer.
 // also makes this application's architecture close to modification.
 
 namespace Managers.Data
@@ -19,6 +21,8 @@ namespace Managers.Data
     public class MatchDataLoader : MonoSingleton<MatchDataLoader>
     {
         public FrameDataStorage frameDataStorage;
+
+        // also used by editor scripts
         public bool IsDataLoaded { get; private set; }
         public event Action OnDataLoadingComplete;
 
@@ -27,20 +31,20 @@ namespace Managers.Data
         /// this method is designed aware of the incremental update capabilities of FrameDataStorage.
         /// </summary>
         /// <param name="path"></param>
-        public async Task LoadJsonDataAsync(string path)
+        public async Task LoadJsonDataAsync()
         {
+            string path = ConfigurationManager.Instance.GetJsonDataPathConfig();
             var progressIndicator = new Progress<float>(progress =>
             {
-                EditorUtility.DisplayProgressBar("Loading...", $"Loading JSON from {path}", progress);
+                EditorUtility.DisplayProgressBar("Buffering...", $"Loading JSON from {path}", progress);
             });
 
             try
             {
                 string jsonContent = await JsonUtilityMethods.LoadJsonContentAsync(path, progressIndicator);
                 List<FrameData> validFrames = DataParsingUtilities.ParseValidFrames(jsonContent,
-                    VisualizationSettingsProvider.CurrentSettings.isValidationEnabled);
+                    VisualizationSettingsProvider.CurrentSettings.IsValidationEnabled);
                 frameDataStorage.IncrementallyUpdateFrameData(validFrames);
-                IsDataLoaded = true;
             }
             catch (Exception e)
             {
@@ -49,6 +53,7 @@ namespace Managers.Data
             finally
             {
                 EditorUtility.ClearProgressBar();
+                IsDataLoaded = true;
                 OnDataLoadingComplete?.Invoke();
             }
         }

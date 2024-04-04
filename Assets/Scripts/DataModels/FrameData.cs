@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataModels;
 using DataModels.Contexts;
+using Services.Validation.ValidatorService;
 
 [System.Serializable]
 public class FrameData
@@ -15,12 +16,12 @@ public class FrameData
     public PossessionCandidateContext PossessionCandidateContext;
 
 
-    // I am indecisive about where to place the IsValid method, if validation criterias are changing frequently
-    // accross the cases, calling it externally as a utility method can be good.
-    // that way we can even use ServiceLocator approach for validation microservice.
+    // a dynamic validation microservice that makes possible to work with data validation criterias are changing along with data stream
+    // the service and the validation rules are two-way customizable
     public bool IsValid()
     {
-        // additional checks can be included here based on needs.
+        // IFrameDataValidator validator = ValidatorSetups.CustomCompositeValidator();
+        // return validator.IsValid(this);
         return true;
     }
 }

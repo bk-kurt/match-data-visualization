@@ -14,6 +14,7 @@ namespace Managers.Object
         {
             _visualElementFactory = factory;
         }
+
         public void UpdatePersonsState(List<PersonData> personsData)
         {
             var updatedIds = new HashSet<int>();
@@ -22,30 +23,33 @@ namespace Managers.Object
                 updatedIds.Add(personData.Id);
                 UpdateOrCreatePerson(personData);
             }
+
             RemoveInactivePersons(updatedIds);
         }
 
-        public void UpdateOrCreatePerson(PersonData personData)
+        private void UpdateOrCreatePerson(PersonData personData)
         {
             if (!_activePersons.TryGetValue(personData.Id, out var person))
             {
-                person = _visualElementFactory.CreatePerson(personData);
+                person = _visualElementFactory?.CreatePerson(personData);
                 _activePersons.Add(personData.Id, person);
             }
-            person.UpdateState(personData);
+
+            if (person != null) person.UpdateState(personData);
         }
 
-        public void RemoveInactivePersons(HashSet<int> updatedIds)
+        private void RemoveInactivePersons(HashSet<int> updatedIds)
         {
             var idsToRemove = new List<int>();
             foreach (var id in _activePersons.Keys)
             {
-                if (!updatedIds.Contains(id))
+                if (!updatedIds.Contains(id) && _activePersons[id])
                 {
                     Destroy(_activePersons[id].gameObject);
                     idsToRemove.Add(id);
                 }
             }
+
             foreach (var id in idsToRemove)
             {
                 _activePersons.Remove(id);
@@ -58,6 +62,7 @@ namespace Managers.Object
             {
                 Destroy(person.gameObject);
             }
+
             _activePersons.Clear();
         }
     }

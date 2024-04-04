@@ -18,7 +18,7 @@ namespace UI.ViewModel
 
         private void OnEnable()
         {
-            MatchStateManager.Instance.OnFrameAdvanced += OnGameAdvanced;
+            MatchStateManager.Instance.OnFrameAdvanced += HandleFrameAdvanced;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace UI.ViewModel
         /// I may review design.
         /// </summary>
         /// <param name="frameData"></param>
-        private void OnGameAdvanced(FrameData frameData)
+        private void HandleFrameAdvanced(FrameData frameData)
         {
             if (frameData == null)
             {
@@ -66,7 +66,7 @@ namespace UI.ViewModel
         {
             if (MatchStateManager.Instance)
             {
-                MatchStateManager.Instance.OnFrameAdvanced -= OnGameAdvanced;
+                MatchStateManager.Instance.OnFrameAdvanced -= HandleFrameAdvanced;
             }
         }
     }

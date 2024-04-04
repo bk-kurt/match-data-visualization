@@ -24,7 +24,7 @@ public abstract class BaseInterpolatedObject : MonoBehaviour
             return;
         }
 
-        if (!InterpolationSettings.isInterpolationEnabled) return;
+        if (!InterpolationSettings.IsInterpolationEnabled) return;
 
         AdjustInterpolationSpeed();
         AdjustRotationSpeed();
@@ -35,14 +35,14 @@ public abstract class BaseInterpolatedObject : MonoBehaviour
 
     private void InterpolatePosition()
     {
-        _positionSmoothTime = InterpolationSettings.commonPositionInterpolationSpeed;
+        _positionSmoothTime = InterpolationSettings.CommonPositionInterpolationSpeed;
         transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity,
             _positionSmoothTime);
     }
 
     private void InterpolateRotation()
     {
-        _rotationSmoothTime = InterpolationSettings.commonRotationInterpolationSpeed * Time.deltaTime;
+        _rotationSmoothTime = InterpolationSettings.CommonRotationInterpolationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, _rotationSmoothTime);
     }
 

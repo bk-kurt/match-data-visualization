@@ -57,7 +57,7 @@ public class Person : BaseInterpolatedObject
         }
     }
 
-    public void RefreshConfig(VisualizationAssetsConfigSo visualizationAssetsConfigSo)
+    public void RefreshConfig(VisualizationAssetsConfigProviderSo visualizationAssetsConfigProviderSo)
     {
         // For example, changing the character model, updating textures,
         // or applying new animation sets based on the provided 
