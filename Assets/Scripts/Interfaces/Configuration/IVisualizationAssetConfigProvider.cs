@@ -1,5 +1,3 @@
-using Scriptables.Configuration;
-
 public interface IVisualizationAssetConfigProvider
 {
     IVisualizationAssetConfigProvider GetGameAssetsConfig();

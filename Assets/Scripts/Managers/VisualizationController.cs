@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    // this component acts like a branch maker, to distrubute actions that are relied on frame unit or whole frame data.
+    //qqq20 this component acts like a branch maker, to distrubute actions that are relied on frame unit or whole frame data.
     public class VisualizationController : MonoBehaviour
     {
         public MatchStateManager matchStateManager;

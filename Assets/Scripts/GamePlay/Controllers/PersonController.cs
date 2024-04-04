@@ -14,7 +14,7 @@ namespace GamePlay.Controllers
             if (interpolatedStateData is PersonData personData)
             {
                 AdjustAnimationBasedOnSpeed(personData.Speed);
-                // AdjustRotationBasedOnSpeed(personData.Speed);
+                // AdjustRotationBasedOnSpeed(personData.Speed); deprecation
             }
         }
 

@@ -1,6 +1,4 @@
-using Scriptables.Configuration;
 using Scriptables.Settings;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -16,7 +14,7 @@ namespace Providers
             {
                 if (_currentSettings == null)
                 {
-                    // I decided to not reference VisualizationSettings via one of managers or interfaces,
+                    //qqq21 I decided to not reference VisualizationSettings via one of managers or interfaces,
                     // because Once the settings object is loaded from the resources
                     // it's kept in memory and reused across the application
                     // its efficient way to access these settings without repetitively loading from disk

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
-// in further implementation, aim is to set up scene using a SceneSetUp config SO
-// and along with a custom dependency wrapper / or use a DI framework like zenject.
+//qqq2 in further implementation, aim is to populate the scene using a SceneSetUp config SO
+// and along with the DI framework.
 
 namespace GamePlay.Environment
 {

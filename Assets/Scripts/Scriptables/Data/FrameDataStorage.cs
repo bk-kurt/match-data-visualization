@@ -1,4 +1,4 @@
-// using scriptable object as a storage is advantageous,
+//qqq31 using scriptable object as a storage is advantageous,
 // unity more efficienty uses memory with scriptables,
 // also we can ease the time-wide operations, develop editor/other tools and perform QA easier.
 
@@ -18,7 +18,7 @@ namespace Scriptables.Data
 
         public event Action<List<FrameData>> OnFrameDataUpdated;
 
-        // we dont need to grab entire dataset all the time, so then incrementally process
+        //qqq22 we dont need to grab entire dataset all the time, so then incrementally process
         public void IncrementallyUpdateFrameData(List<FrameData> updatedFrameData)
         {
             frameDataList ??= new List<FrameData>();
@@ -52,7 +52,7 @@ namespace Scriptables.Data
         }
 
 
-        // I believe these two methods below would do a good job on dealing with streaming data.
+        //qqq23 I believe these two methods below would do a good job on dealing with streaming data.
         public FrameData GetLatestFrameData()
         {
             if (frameDataList == null || frameDataList.Count == 0)

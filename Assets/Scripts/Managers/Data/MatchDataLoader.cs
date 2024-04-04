@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using System;
 using Managers.Configuration;
 using Providers;
-using Scriptables.Configuration;
 using Scriptables.Data;
 using UnityEditor;
 using Utilities;
 using Utilities.Data;
 
 
-// the parsed JSON file was primarily prepared/formatted externally using Python, I estimate that the delegation is better choice
+//qqq8 the parsed JSON file was primarily prepared/formatted externally using Python, I estimate that the delegation is better choice
 // since unity Json capabilities are limited and requires additional dependencies if tried. Also i estimate that in a data oriented pipeline,
 // python environments plays a powerful role, that way preferences and corruptions can be handled safer.
 // also makes this application's architecture close to modification.
@@ -28,7 +27,7 @@ namespace Managers.Data
 
 
         /// <summary>
-        /// this method is designed aware of the incremental update capabilities of FrameDataStorage.
+        ///qqq9 this method is designed aware of the incremental update capabilities of FrameDataStorage.
         /// </summary>
         /// <param name="path"></param>
         public async Task LoadJsonDataAsync()

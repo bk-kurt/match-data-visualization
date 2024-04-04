@@ -3,7 +3,7 @@ using Providers;
 using Scriptables.Settings;
 using UnityEngine;
 
-// I noticed a frame-independent interpolation facility is needed in a frame-manipulated environment. 
+//qqq5 I noticed a frame-independent interpolation facility is needed in a frame-manipulated environment. 
 // With the help of this interpolation we can even interpolate while jumping between distinct timestamps (frame indexes)!!
 public abstract class BaseInterpolatedObject : MonoBehaviour
 {

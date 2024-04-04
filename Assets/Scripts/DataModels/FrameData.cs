@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using DataModels;
 using DataModels.Contexts;
-using Services.Validation.ValidatorService;
 
 [System.Serializable]
 public class FrameData
@@ -16,6 +14,8 @@ public class FrameData
     public PossessionCandidateContext PossessionCandidateContext;
 
 
+    //qqq1 validation can happen externally instead of the data structure, below is explanatory...
+    
     // a dynamic validation microservice that makes possible to work with data validation criterias are changing along with data stream
     // the service and the validation rules are two-way customizable
     public bool IsValid()

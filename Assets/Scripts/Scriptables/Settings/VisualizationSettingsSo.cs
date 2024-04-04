@@ -15,7 +15,7 @@ namespace Scriptables.Settings
 
         public bool IsValidationEnabled => isValidationEnabled;
 
-        // DataPathConfigSo, This is for editor execution reference, normally provided by config provider in runtime. (for quick prototyping)
+        //qqq24 DataPathConfigSo, This is for editor execution reference, normally provided by config provider in runtime. (for quick prototyping)
         public DataPathConfigSo DataPathConfigSo => dataPathConfigSo; 
         
         

@@ -1,6 +1,5 @@
 using DataModels;
 using GamePlay.Environment;
-using Scriptables.Configuration;
 using Unity.VisualScripting;
 using UnityEngine;
 using VisualizationAssetsConfigProviderSo = Scriptables.Configuration.VisualizationAssetsConfigProviderSo;

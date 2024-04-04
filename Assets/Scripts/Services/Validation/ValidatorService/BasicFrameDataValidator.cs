@@ -6,7 +6,7 @@ namespace Validation
     {
         public bool IsValid(FrameData frameData)
         {
-            // Perform basic integrity checks, e.g., non-null, basic structure
+            //qqq26 genereal basic rules
             return frameData != null && frameData.Persons != null && frameData.Ball != null;
         }
     }

@@ -1,6 +1,6 @@
 
 
-
+// qqq25
 // WHEN YOU WANT TO GENERATE a new rule that you can change its definition dynamically, you need to do 3 things:
 
 // 1. create the class of rule                                                                  >>>  class BallInBoundsRule

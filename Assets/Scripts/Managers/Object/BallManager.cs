@@ -41,9 +41,8 @@ namespace Managers.Object
 
             if (_instantiatedBall != null)
             {
-                // Ideally, camera setup or other side effects should be minimized or handled elsewhere
-                // to keep this method focused on ball state updating.
-                // Consider an event or callback system for camera or other dependencies.
+                //qqq10 this can be handled other place, sample usage due to project earliness
+                // callback system for camera or other dependencies.
                 CameraController.Instance.SetTarget(_instantiatedBall.transform);
             }
             else

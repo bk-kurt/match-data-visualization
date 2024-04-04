@@ -22,7 +22,7 @@ namespace UI.ViewModel
         }
 
         /// <summary>
-        /// selectively notifies, because constant notification by frame unit is not efficient
+        ///qqq27 selectively notifies, because constant notification by frame unit is not efficient
         /// not the state of art application of selective/dynamic ui notification, due to conditional checks disadvantage.
         /// I may review design.
         /// </summary>

@@ -57,13 +57,6 @@ public class Person : BaseInterpolatedObject
         }
     }
 
-    public void RefreshConfig(VisualizationAssetsConfigProviderSo visualizationAssetsConfigProviderSo)
-    {
-        // For example, changing the character model, updating textures,
-        // or applying new animation sets based on the provided 
-        throw new System.NotImplementedException();
-    }
-
     void OnDisable()
     {
         if (BallEventManager.Instance != null)

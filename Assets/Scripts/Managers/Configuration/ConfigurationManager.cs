@@ -25,7 +25,7 @@ namespace Managers.Configuration
 
         
         /// <summary>
-        /// we can even set configurations with remote config freely..
+        ///qqq7 we can even set configurations with remote config freely..
         /// </summary>
         /// <param name="newConfigProvider"></param>
         public void SetVisualAssetsConfiguration(IVisualizationAssetConfigProvider newConfigProvider)

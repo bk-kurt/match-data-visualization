@@ -1,7 +1,6 @@
 using DataModels;
-using Scriptables.Configuration;
 
-// sample starting point of dynamic factory building with configs, IVisualElementFactory
+//qqq3 sample starting point of dynamic factory building with configs, IVisualElementFactory
 namespace GamePlay.Factory
 {
     public class VisualElementFactory: IVisualElementFactory

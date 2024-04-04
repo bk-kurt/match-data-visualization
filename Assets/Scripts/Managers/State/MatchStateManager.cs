@@ -7,7 +7,7 @@ namespace Managers.State
 {
     public class MatchStateManager : MonoSingleton<MatchStateManager>
     {
-        // since our visualization is basically relying on frame data,
+        //qqq11 since our visualization is basically relying on frame data,
         // the architecture should be reactive and powered by frame based signals and their advancement.
         public event Action<FrameData> OnFrameAdvanced;
         public bool IsPlaying { get; private set; }
@@ -26,7 +26,7 @@ namespace Managers.State
         }
 
 
-        // Instead of starting a coroutine, I take the advantage of update cycle for creating
+        //qqq12 Instead of starting a coroutine, I take the advantage of update cycle for creating
         // more dynamic, responsive and consistent application takes the adv of good set of conditions.
         private void Update()
         {
