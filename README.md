@@ -1,6 +1,8 @@
 # match-data-visualization
 
-- Git lfs should be pulled
+- qqq (dev comments identifier)
+- added python JSON_Formatter.py used for pre-processing
+
 
 ## Project play recording : (https://youtu.be/I1fQtmSllyE)
 
