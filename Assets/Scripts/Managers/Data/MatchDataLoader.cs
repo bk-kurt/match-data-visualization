@@ -40,10 +40,7 @@ namespace Managers.Data
 
             try
             {
-                string jsonContent = await JsonUtilityMethods.LoadJsonContentAsync(path, progressIndicator);
-                List<FrameData> validFrames = DataParsingUtilities.ParseValidFrames(jsonContent,
-                    VisualizationSettingsProvider.CurrentSettings.IsValidationEnabled);
-                frameDataStorage.IncrementallyUpdateFrameData(validFrames);
+                await LoadJsonData(path, progressIndicator);
             }
             catch (Exception e)
             {
@@ -55,6 +52,14 @@ namespace Managers.Data
                 IsDataLoaded = true;
                 OnDataLoadingComplete?.Invoke();
             }
+        }
+
+        private async Task LoadJsonData(string path, Progress<float> progressIndicator)
+        {
+            string jsonContent = await JsonUtilityMethods.LoadJsonContentAsync(path, progressIndicator);
+            List<FrameData> validFrames = DataParsingUtilities.ParseValidFrames(jsonContent,
+                VisualizationSettingsProvider.CurrentSettings.IsValidationEnabled);
+            frameDataStorage.IncrementallyUpdateFrameData(validFrames);
         }
 
         public FrameData GetFrameDataAtIndex(int index)

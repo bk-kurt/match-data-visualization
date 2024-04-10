@@ -1,8 +1,8 @@
 using DataModels;
 using GamePlay.Environment;
-using Unity.VisualScripting;
 using UnityEngine;
-using VisualizationAssetsConfigProviderSo = Scriptables.Configuration.VisualizationAssetsConfigProviderSo;
+using Scriptables.Configuration;
+using Unity.VisualScripting;
 
 namespace GamePlay.Factory
 {
@@ -32,19 +32,25 @@ namespace GamePlay.Factory
                 return null;
             }
 
-            Vector3 ballPosition = ballData.TargetPosition;
-            var parentTransform = EnvironmentSetUp.Instance.transform;
-            Ball instantiatedBallGo =
-                Object.Instantiate(assetsConfigProviderSo.GetConfiguredBallConfig().ballPrefab, ballPosition,
-                    Quaternion.identity, parentTransform);
-
-            Ball ballComponent = instantiatedBallGo.GetComponent<Ball>();
-            if (ballComponent == null)
+            var ballConfig = assetsConfigProviderSo.GetConfiguredBallConfig();
+            if (ballConfig.ballPrefab == null)
             {
-                ballComponent = instantiatedBallGo.AddComponent<Ball>();
+                Debug.LogError("BallFactory: Ball configuration or prefab is null.");
+                return null;
             }
 
+            return InstantiateAndInitializeBall(ballData, ballConfig.ballPrefab);
+        }
+
+        private static Ball InstantiateAndInitializeBall(BallData ballData, Object ballPrefab)
+        {
+            var parentTransform = EnvironmentSetUp.Instance.transform; // Ensure this does not return null.
+            var instantiatedBallGo =
+                Object.Instantiate(ballPrefab, ballData.TargetPosition, Quaternion.identity, parentTransform);
+
+            var ballComponent = instantiatedBallGo.GetComponent<Ball>() ?? instantiatedBallGo.AddComponent<Ball>();
             ballComponent.Initialize(ballData);
+
             return ballComponent;
         }
     }

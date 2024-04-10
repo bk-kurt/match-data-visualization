@@ -17,43 +17,65 @@ namespace GamePlay.Factory
 
         public static Person Create(PersonData personData)
         {
-            if (personData == null || _visualizationAssetsConfigProvider == null)
+            if (personData == null)
             {
-                Debug.LogError("PersonFactory: Person data or person config provider is null.");
+                Debug.LogError("PersonFactory: Person data is null.");
                 return null;
             }
 
-            VisualizationAssetsConfigProviderSo assetsConfigProviderSo =
-                _visualizationAssetsConfigProvider as VisualizationAssetsConfigProviderSo;
-            if (assetsConfigProviderSo != null)
+            if (_visualizationAssetsConfigProvider == null)
             {
-              var personConfig=  assetsConfigProviderSo.GetConfiguredPersonByTeamSide(personData.TeamSide);
-                if (assetsConfigProviderSo == null || personConfig == null)
-                {
-                    Debug.LogError(
-                        $"PersonFactory: Configuration or prefab is null for team side {personData.TeamSide}.");
-                    return null;
-                }
-
-                Vector3 personPosition = personData.TargetPosition;
-                var parentTransform = EnvironmentSetUp.Instance.teamTransforms[personData.TeamSide];
-                Person instantiatedPersonGo = Object.Instantiate(personConfig.personPrefab, personPosition,
-                    Quaternion.identity, parentTransform);
-
-                Person personComponent = instantiatedPersonGo.GetComponent<Person>();
-                if (personComponent == null)
-                {
-                    personComponent = instantiatedPersonGo.AddComponent<Person>();
-                }
-
-                personComponent.Initialize(personData);
-                return personComponent;
+                Debug.LogError("PersonFactory: Visualization assets config provider is null.");
+                return null;
             }
 
-            Debug.LogError(
-                $"PersonFactory: Configuration provider is null");
-            return null;
+            var assetsConfigProviderSo = _visualizationAssetsConfigProvider as VisualizationAssetsConfigProviderSo;
+            if (assetsConfigProviderSo == null)
+            {
+                Debug.LogError("PersonFactory: Incorrect type for visualization assets config provider.");
+                return null;
+            }
+
+            var personConfig = assetsConfigProviderSo.GetConfiguredPersonByTeamSide(personData.TeamSide);
+            if (personConfig == null || personConfig.personPrefab == null)
+            {
+                Debug.LogError($"PersonFactory: Configuration or prefab is null for team side {personData.TeamSide}.");
+                return null;
+            }
+
+            var instantiatedPerson = InstantiatePerson(personData, personConfig);
+            if (instantiatedPerson == null)
+            {
+                return null; // Early return if person could not be instantiated correctly.
+            }
+
+            InitializePerson(instantiatedPerson, personData);
+            return instantiatedPerson;
         }
-        
+
+        private static Person InstantiatePerson(PersonData personData, PersonConfigSo personConfig)
+        {
+            var parentTransform = EnvironmentSetUp.Instance.teamTransforms[personData.TeamSide];
+            if (parentTransform == null)
+            {
+                Debug.LogError("PersonFactory: Parent transform is null.");
+                return null;
+            }
+
+            var instantiatedPersonGo = Object.Instantiate(personConfig.personPrefab, personData.TargetPosition, Quaternion.identity, parentTransform);
+            if (instantiatedPersonGo == null)
+            {
+                Debug.LogError("PersonFactory: Instantiation of person prefab failed.");
+                return null;
+            }
+            
+            var personComponent = instantiatedPersonGo.GetComponent<Person>() ?? instantiatedPersonGo.AddComponent<Person>();
+            return personComponent;
+        }
+
+        private static void InitializePerson(Person person, PersonData personData)
+        {
+            person.Initialize(personData);
+        }
     }
 }
